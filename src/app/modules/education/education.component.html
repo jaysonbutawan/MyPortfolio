@@ -1,0 +1,114 @@
+<!-- ============================================================
+     EDUCATION SECTION — Resume-style cards
+     Each card: year badge (left) + degree, school, notes (right)
+     Scroll-triggered staggered reveal + hover slide.
+     ============================================================ -->
+
+<section
+  id="education"
+  class="relative py-20 md:py-28 px-6 md:px-8 max-w-[1200px] mx-auto"
+>
+  <!-- Section Header -->
+  <div class="mb-14">
+    <p
+      class="font-['JetBrains_Mono',monospace] text-[0.72rem] text-[#5b8def] tracking-[3px] uppercase opacity-80 mb-3"
+    >
+      // Education
+    </p>
+    <h2
+      class="text-[2.2rem] md:text-[2.6rem] font-bold tracking-[-1px] leading-[1.15] text-[#e8ecf4]"
+    >
+      Academic
+      <span
+        class="text-transparent bg-clip-text bg-gradient-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
+      >
+        background
+      </span>
+    </h2>
+  </div>
+
+  <!-- Education Cards -->
+  <div class="flex flex-col gap-4">
+
+    <div
+      *ngFor="let edu of educations; let i = index"
+      #eduCard
+      class="edu-card group
+             flex flex-col md:flex-row items-start gap-5 md:gap-6
+             bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)]
+             rounded-2xl p-6 md:p-7
+             opacity-0 translate-y-8
+             hover:bg-[rgba(20,30,60,0.8)] hover:border-[rgba(100,160,255,0.2)]
+             hover:translate-x-1
+             transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
+             cursor-default"
+      [style.transitionDelay]="(i * 150) + 'ms'"
+    >
+      <!-- Left: Year Badge + Icon -->
+      <div class="flex md:flex-col items-center md:items-start gap-3 md:gap-2 md:min-w-[120px] flex-shrink-0">
+        <!-- Icon -->
+        <div
+          class="w-10 h-10 rounded-xl
+                 bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.1)]
+                 flex items-center justify-center text-base
+                 group-hover:bg-[rgba(91,141,239,0.12)] group-hover:border-[rgba(91,141,239,0.2)]
+                 transition-colors duration-300"
+        >
+          {{ edu.icon }}
+        </div>
+
+        <!-- Year -->
+        <p
+          class="font-['JetBrains_Mono',monospace] text-[0.78rem] text-[#5b8def]
+                 whitespace-nowrap tracking-[0.5px]"
+        >
+          {{ edu.year }}
+        </p>
+      </div>
+
+      <!-- Right: Content -->
+      <div class="min-w-0 flex-1">
+        <!-- Degree -->
+        <h3
+          class="text-[1.05rem] font-semibold text-[#e8ecf4] mb-1
+                 group-hover:text-white transition-colors duration-300"
+        >
+          {{ edu.degree }}
+        </h3>
+
+        <!-- School -->
+        <p class="text-[0.88rem] text-[#8a94a8] mb-3">
+          {{ edu.school }}
+        </p>
+
+        <!-- Notes -->
+        <p class="text-[0.8rem] text-[#515a6e] leading-[1.7]">
+          {{ edu.note }}
+        </p>
+      </div>
+
+      <!-- Right Arrow (shows on hover) -->
+      <div
+        class="hidden md:flex items-center self-center
+               opacity-0 -translate-x-2
+               group-hover:opacity-100 group-hover:translate-x-0
+               transition-all duration-300"
+      >
+        <i class="pi pi-chevron-right text-[0.7rem] text-[#5b8def]"></i>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Scroll-triggered animation -->
+<style>
+  .edu-card.is-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .edu-card.is-visible:hover {
+    transform: translateX(4px) !important;
+  }
+</style>

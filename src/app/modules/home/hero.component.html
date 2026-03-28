@@ -1,0 +1,157 @@
+<section
+  id="hero"
+  class="relative min-h-screen w-full bg-[#06080f] overflow-hidden flex items-center justify-center p-6 md:p-8 font-['Outfit',sans-serif] text-[#e8ecf4]"
+>
+  <!-- ====== FLOATING TECH ICONS BACKGROUND ====== -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <div
+      *ngFor="let icon of techIcons; trackBy: trackByIcon"
+      class="absolute font-['JetBrains_Mono',monospace] font-semibold select-none"
+      [style.top]="icon.top"
+      [style.left]="icon.left"
+      [style.fontSize]="icon.size"
+      [style.color]="icon.color"
+      [style.textShadow]="'0 0 20px ' + icon.color + '44'"
+      [style.opacity]="icon.opacity"
+      [style.animation]="'floatDrift ' + icon.duration + 's linear ' + icon.delay + 's infinite'"
+    >
+      {{ icon.name }}
+    </div>
+  </div>
+
+  <!-- ====== MAIN CONTENT GRID ====== -->
+  <div
+    class="max-w-300 w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center z-10"
+  >
+    <!-- ====== LEFT: TEXT CONTENT ====== -->
+    <div class="space-y-7">
+      <!-- Status Badge -->
+      <div
+        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.15)] text-[0.78rem] font-medium text-[#7ba8ff]"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-pulse"></span>
+        Available for opportunities
+      </div>
+
+      <!-- Name & Role -->
+      <div class="space-y-3">
+        <h1 class="text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-[-3px] leading-[0.95]">
+          Jayson<br />
+          <span class="text-[#c8cdd8]">Butawan</span>
+        </h1>
+        <h2 class="text-xl md:text-2xl font-light text-[#8a94a8] tracking-[-0.3px]">
+          Creative
+          <span
+            class="font-semibold text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
+          >
+            Full-Stack Developer
+          </span>
+        </h2>
+      </div>
+
+      <!-- Summary -->
+      <p class="text-[#8a94a8] text-[0.95rem] leading-[1.8] max-w-120">
+        I architect and build performant web applications with clean code, modern frameworks, and a
+        deep focus on user experience. Turning complex problems into elegant digital solutions.
+      </p>
+
+
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+          <button type="button"
+            class="group relative overflow-hidden bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] text-white font-semibold text-[0.88rem] tracking-[0.2px] py-3.5 px-7 rounded-xl flex items-center gap-2.5 shadow-[0_4px_24px_rgba(91,141,239,0.3)] hover:shadow-[0_8px_32px_rgba(91,141,239,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 cursor-pointer"
+        >
+          <div
+            class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></div>
+          <i class="pi pi-download text-sm relative z-10"></i>
+          <span class="relative z-10">Download CV</span>
+        </button>
+
+        <button
+          class="bg-transparent border border-[rgba(100,160,255,0.2)] text-[#e8ecf4] font-semibold text-[0.88rem] tracking-[0.2px] py-3.5 px-7 rounded-xl flex items-center gap-2.5 hover:bg-[rgba(91,141,239,0.06)] hover:border-[#5b8def] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-300 cursor-pointer"
+        >
+          <i class="pi pi-envelope text-sm"></i>
+          Contact Me
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="flex items-center gap-10 pt-8 mt-2 border-t border-[rgba(100,140,255,0.08)]">
+        <div>
+          <div
+            class="text-3xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] to-[#a78bfa]"
+          >
+            5+
+          </div>
+          <div class="text-[0.7rem] uppercase tracking-[0.5px] text-[#515a6e] font-medium mt-1">
+            Years Experience
+          </div>
+        </div>
+        <div>
+          <div
+            class="text-3xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-[#a78bfa] to-[#34d399]"
+          >
+            30+
+          </div>
+          <div class="text-[0.7rem] uppercase tracking-[0.5px] text-[#515a6e] font-medium mt-1">
+            Projects Delivered
+          </div>
+        </div>
+        <div>
+          <div
+            class="text-3xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-[#34d399] to-[#5b8def]"
+          >
+            15+
+          </div>
+          <div class="text-[0.7rem] uppercase tracking-[0.5px] text-[#515a6e] font-medium mt-1">
+            Happy Clients
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== RIGHT: ORB VISUAL ====== -->
+    <div class="relative flex items-center justify-center order-first lg:order-last">
+      <div
+        class="relative w-75 h-75 sm:w-95 sm:h-95 lg:w-105 lg:h-105 rounded-full bg-[radial-gradient(circle_at_35%_35%,rgba(91,141,239,0.15),rgba(167,139,250,0.08),transparent_70%)] border border-[rgba(91,141,239,0.1)] animate-[orbFloat_8s_ease-in-out_infinite]"
+      >
+        <!-- Spinning ring -->
+        <div
+          class="absolute inset-px rounded-full opacity-[0.12] bg-[conic-gradient(from_0deg,transparent,#5b8def,transparent,#a78bfa,transparent)] animate-[orbSpin_12s_linear_infinite]"
+        ></div>
+
+        <!-- Orbiting dot -->
+        <div class="absolute inset-0 animate-[orbSpin_8s_linear_infinite]">
+          <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#5b8def] shadow-[0_0_16px_#5b8def,0_0_32px_rgba(91,141,239,0.4)]"
+          ></div>
+        </div>
+
+        <!-- Second orbiting dot (opposite side, slower) -->
+        <div class="absolute inset-0 animate-[orbSpin_14s_linear_infinite_reverse]">
+          <div
+            class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 rounded-full bg-[#a78bfa] shadow-[0_0_12px_#a78bfa,0_0_24px_rgba(167,139,250,0.3)]"
+          ></div>
+        </div>
+
+        <!-- Inner orb with code snippet -->
+        <div
+          class="absolute inset-7 sm:inset-9rounded-full bg-[radial-gradient(circle,#0c1120_0%,#06080f_100%)] border border-[rgba(100,140,255,0.06)] flex items-center justify-center z-20"
+        >
+          <div
+            class="bg-[#0a0e18]/80 backdrop-blur-xl border border-[rgba(100,140,255,0.1)] p-5 sm:p-6 rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+          >
+            <pre
+              class="text-[0.72rem] sm:text-[0.78rem] font-['JetBrains_Mono',monospace] leading-relaxed"
+            >
+<span class="text-[#5b8def]">const</span> <span class="text-[#e8ecf4]">dev</span> = &#123;
+  passion: <span class="text-[#34d399]">"building"</span>,
+  focus: <span class="text-[#34d399]">"fullstack"</span>,
+  coffee: <span class="text-[#a78bfa]">true</span>
+&#125;;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

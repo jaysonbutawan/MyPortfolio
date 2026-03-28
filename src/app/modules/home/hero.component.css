@@ -1,0 +1,48 @@
+      @keyframes floatDrift {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+          opacity: 0;
+        }
+        8% {
+          opacity: var(--max-opacity, 0.08);
+        }
+        50% {
+          transform: translate(
+              calc(var(--dx, 80px)),
+              calc(var(--dy, -60px))
+            )
+            rotate(15deg);
+        }
+        92% {
+          opacity: var(--max-opacity, 0.08);
+        }
+        100% {
+          transform: translate(
+              calc(var(--dx2, -40px)),
+              calc(var(--dy2, 100px))
+            )
+            rotate(-10deg);
+          opacity: 0;
+        }
+      }
+
+      /* ====== Orb animations ====== */
+      @keyframes orbFloat {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        33% {
+          transform: translateY(-12px) rotate(1.5deg);
+        }
+        66% {
+          transform: translateY(8px) rotate(-1deg);
+        }
+      }
+
+      @keyframes orbSpin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+

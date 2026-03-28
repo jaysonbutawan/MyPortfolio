@@ -1,0 +1,203 @@
+<!-- ============================================================
+     NAVBAR — Fixed top navigation
+     Color scheme: #06080f bg, #5b8def accent, #a78bfa secondary,
+     #34d399 tertiary, #e8ecf4 text, #8a94a8 muted
+     Font: Outfit (main), JetBrains Mono (mono)
+     ============================================================ -->
+
+<nav [class]="navClasses()">
+  <div class="max-w-[1200px] mx-auto px-8 h-[72px] flex items-center justify-between">
+
+    <!-- ====== LOGO ====== -->
+    <a
+      (click)="scrollTo('hero')"
+      class="flex items-center gap-1 cursor-pointer select-none group"
+    >
+      <span
+        class="font-extrabold text-[1.3rem] tracking-[-0.5px] bg-gradient-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] bg-clip-text text-transparent"
+      >
+        JD
+      </span>
+      <span class="font-mono font-medium text-[0.85rem] text-[#515a6e] group-hover:text-[#8a94a8] transition-colors duration-300">
+        .dev
+      </span>
+    </a>
+
+    <!-- ====== DESKTOP NAV LINKS ====== -->
+    <ul class="hidden md:flex items-center gap-1">
+      <li *ngFor="let link of navLinks">
+        <button
+          (click)="scrollTo(link.fragment)"
+          type="button"
+          class="relative px-4 py-2 rounded-lg text-[0.82rem] font-medium tracking-[0.3px] transition-all duration-300 cursor-pointer"
+          [ngClass]="{
+            'text-[#e8ecf4] bg-[rgba(91,141,239,0.08)]': isActive(link.fragment),
+            'text-[#8a94a8] hover:text-[#e8ecf4] hover:bg-[rgba(91,141,239,0.08)]': !isActive(link.fragment)
+          }"
+        >
+          {{ link.label }}
+
+          <!-- Active indicator dot -->
+          <span
+            *ngIf="isActive(link.fragment)"
+            class="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-[1px] bg-[#5b8def] transition-all duration-300"
+          ></span>
+        </button>
+      </li>
+    </ul>
+
+    <!-- ====== CTA BUTTON (Desktop) ====== -->
+    <a
+      (click)="scrollTo('contact')"
+      class="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-[0.8rem] font-semibold tracking-[0.2px] cursor-pointer
+             bg-gradient-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] text-white
+             shadow-[0_4px_24px_rgba(91,141,239,0.3)]
+             hover:shadow-[0_8px_32px_rgba(91,141,239,0.45)] hover:-translate-y-[2px]
+             active:scale-[0.97] transition-all duration-300"
+    >
+      <i class="pi pi-send text-xs"></i>
+      Let's Talk
+    </a>
+
+    <!-- ====== HAMBURGER (Mobile) ====== -->
+    <button
+      (click)="toggleMobileMenu()"
+      type="button"
+      aria-label="Toggle navigation menu"
+      class="md:hidden flex flex-col justify-center items-center gap-[5px] p-2 z-[110] cursor-pointer"
+    >
+      <span
+        class="w-6 h-[2px] rounded-[2px] bg-[#e8ecf4] transition-all duration-300 origin-center"
+        [ngClass]="{
+          'rotate-45 translate-y-[7px]': isMobileMenuOpen(),
+          'rotate-0 translate-y-0': !isMobileMenuOpen()
+        }"
+      ></span>
+      <span
+        class="w-6 h-[2px] rounded-[2px] bg-[#e8ecf4] transition-all duration-300"
+        [ngClass]="{
+          'opacity-0 scale-x-0': isMobileMenuOpen(),
+          'opacity-100 scale-x-100': !isMobileMenuOpen()
+        }"
+      ></span>
+      <span
+        class="w-6 h-[2px] rounded-[2px] bg-[#e8ecf4] transition-all duration-300 origin-center"
+        [ngClass]="{
+          '-rotate-45 -translate-y-[7px]': isMobileMenuOpen(),
+          'rotate-0 translate-y-0': !isMobileMenuOpen()
+        }"
+      ></span>
+    </button>
+  </div>
+
+  <!-- ====== MOBILE MENU OVERLAY ====== -->
+  <!-- Backdrop -->
+  <div
+    *ngIf="isMobileMenuOpen()"
+    (click)="closeMobileMenu()"
+    class="fixed inset-0 bg-[#06080f]/60 backdrop-blur-sm z-[99] md:hidden animate-in fade-in duration-200"
+  ></div>
+
+  <!-- Slide-in Panel -->
+  <div
+    class="fixed top-0 right-0 w-[280px] h-screen z-[100] md:hidden
+           bg-[#06080f]/[0.97] backdrop-blur-[20px] border-l border-[rgba(100,140,255,0.08)]
+           transition-transform duration-400 ease-out"
+    [ngClass]="{
+      'translate-x-0': isMobileMenuOpen(),
+      'translate-x-full': !isMobileMenuOpen()
+    }"
+  >
+    <!-- Panel Header -->
+    <div class="px-6 pt-6 pb-4 border-b border-[rgba(100,140,255,0.08)]">
+      <div class="flex items-center justify-between">
+        <span class="font-extrabold text-lg bg-gradient-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] bg-clip-text text-transparent">
+          JD<span class="font-mono font-medium text-[0.85rem] text-[#515a6e]">.dev</span>
+        </span>
+        <button
+          (click)="closeMobileMenu()"
+          type="button"
+          aria-label="Close menu"
+          class="text-[#515a6e] hover:text-white transition-colors p-2"
+        >
+          <i class="pi pi-times text-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel Links -->
+    <div class="px-4 pt-4 space-y-1">
+      <button
+        *ngFor="let link of navLinks; let i = index"
+        (click)="scrollTo(link.fragment)"
+        type="button"
+        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[0.88rem] font-medium transition-all duration-300 cursor-pointer"
+        [ngClass]="{
+          'text-[#e8ecf4] bg-[rgba(91,141,239,0.1)]': isActive(link.fragment),
+          'text-[#8a94a8] hover:text-[#e8ecf4] hover:bg-[rgba(91,141,239,0.06)]': !isActive(link.fragment)
+        }"
+        [style.animation-delay]="(i * 50) + 'ms'"
+      >
+        <i
+          [class]="link.icon"
+          class="text-sm w-5 text-center"
+          [ngClass]="{
+            'text-[#5b8def]': isActive(link.fragment),
+            'text-[#515a6e]': !isActive(link.fragment)
+          }"
+        ></i>
+        {{ link.label }}
+
+        <!-- Active arrow -->
+        <i
+          *ngIf="isActive(link.fragment)"
+          class="pi pi-chevron-right text-[10px] text-[#5b8def] ml-auto"
+        ></i>
+      </button>
+    </div>
+
+    <!-- Panel Footer CTA -->
+    <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-[rgba(100,140,255,0.08)]">
+      <button
+        (click)="scrollTo('contact')"
+        type="button"
+        class="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-[0.82rem] font-bold tracking-widest uppercase cursor-pointer
+               bg-gradient-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] text-white
+               shadow-[0_4px_24px_rgba(91,141,239,0.3)]
+               hover:shadow-[0_8px_32px_rgba(91,141,239,0.45)]
+               active:scale-[0.97] transition-all duration-300"
+      >
+        <i class="pi pi-send text-xs"></i>
+        Let's Talk
+      </button>
+
+      <!-- Social row -->
+      <div class="flex items-center justify-center gap-4 mt-4">
+        <a
+          href="#"
+          class="w-9 h-9 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(100,140,255,0.08)]
+                 flex items-center justify-center text-[#515a6e] hover:text-[#5b8def] hover:border-[rgba(91,141,239,0.2)]
+                 transition-all duration-300"
+        >
+          <i class="pi pi-github text-sm"></i>
+        </a>
+        <a
+          href="#"
+          class="w-9 h-9 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(100,140,255,0.08)]
+                 flex items-center justify-center text-[#515a6e] hover:text-[#5b8def] hover:border-[rgba(91,141,239,0.2)]
+                 transition-all duration-300"
+        >
+          <i class="pi pi-linkedin text-sm"></i>
+        </a>
+        <a
+          href="#"
+          class="w-9 h-9 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(100,140,255,0.08)]
+                 flex items-center justify-center text-[#515a6e] hover:text-[#5b8def] hover:border-[rgba(91,141,239,0.2)]
+                 transition-all duration-300"
+        >
+          <i class="pi pi-envelope text-sm"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
