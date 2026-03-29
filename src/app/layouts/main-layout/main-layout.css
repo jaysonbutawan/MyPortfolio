@@ -1,8 +1,55 @@
-:host {
-  display: block;
+
+.floating-icon {
+  position: absolute;
+  opacity: 0;
+  filter: blur(0.4px);
+  animation-name: floatDrift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
 }
 
-/* Smooth scrolling for the whole app */
-html {
-  scroll-behavior: smooth;
+@keyframes floatDrift {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 0;
+  }
+  6% {
+    opacity: var(--max-opacity, 0.08);
+  }
+  25% {
+    transform:
+      translate(
+        calc(var(--dx, 80px) * 0.5),
+        calc(var(--dy, -60px) * 0.5)
+      )
+      rotate(calc(var(--rot, 15deg) * 0.5))
+      scale(1.05);
+  }
+  50% {
+    transform:
+      translate(var(--dx, 80px), var(--dy, -60px))
+      rotate(var(--rot, 15deg))
+      scale(1.1);
+    opacity: var(--max-opacity, 0.08);
+  }
+  75% {
+    transform:
+      translate(
+        calc(var(--dx2, -40px) * 0.5 + var(--dx, 80px) * 0.5),
+        calc(var(--dy2, 100px) * 0.5 + var(--dy, -60px) * 0.5)
+      )
+      rotate(calc(var(--rot2, -10deg) * 0.5))
+      scale(1.05);
+  }
+  94% {
+    opacity: var(--max-opacity, 0.08);
+  }
+  100% {
+    transform:
+      translate(var(--dx2, -40px), var(--dy2, 100px))
+      rotate(var(--rot2, -10deg))
+      scale(1);
+    opacity: 0;
+  }
 }

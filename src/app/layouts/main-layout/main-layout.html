@@ -1,6 +1,39 @@
+<!-- ============================================================
+     MAIN LAYOUT
+     Devicon CDN loaded in index.html (see instructions below).
+     Each icon uses CSS custom properties for unique random drift.
+     ============================================================ -->
+
 <app-navbar />
 
-<main class="min-h-screen bg-[#06080f]">
-  <router-outlet />
+<main class="relative min-h-screen bg-[#06080f] overflow-hidden">
+
+  <!-- Floating Tech Icons Background -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    @for (icon of techIcons; track icon.id) {
+      <i
+        [class]="icon.iconClass + ' floating-icon'"
+        [style.top]="icon.top"
+        [style.left]="icon.left"
+        [style.fontSize]="icon.size"
+        [style.color]="icon.color"
+        [style.textShadow]="'0 0 24px ' + icon.color + '55'"
+        [style.--max-opacity]="icon.opacity"
+        [style.--dx]="icon.dx + 'px'"
+        [style.--dy]="icon.dy + 'px'"
+        [style.--dx2]="icon.dx2 + 'px'"
+        [style.--dy2]="icon.dy2 + 'px'"
+        [style.--rot]="icon.rotate + 'deg'"
+        [style.--rot2]="icon.rotate2 + 'deg'"
+        [style.animationDuration]="icon.duration + 's'"
+        [style.animationDelay]="icon.delay + 's'"
+      ></i>
+    }
+  </div>
+
+  <!-- Page Content -->
+  <div class="relative z-10">
+    <router-outlet />
+  </div>
+
 </main>
- 

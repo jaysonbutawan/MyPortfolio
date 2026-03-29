@@ -1,23 +1,8 @@
 <section
   id="hero"
-  class="relative min-h-screen w-full bg-[#06080f] overflow-hidden flex items-center justify-center p-6 md:p-8 font-['Outfit',sans-serif] text-[#e8ecf4]"
+  class="relative min-h-screen w-full overflow-hidden flex items-center justify-center p-6 md:p-8 font-['Outfit',sans-serif] text-[#e8ecf4]"
 >
-  <!-- ====== FLOATING TECH ICONS BACKGROUND ====== -->
-  <div class="absolute inset-0 pointer-events-none overflow-hidden">
-    <div
-      *ngFor="let icon of techIcons; trackBy: trackByIcon"
-      class="absolute font-['JetBrains_Mono',monospace] font-semibold select-none"
-      [style.top]="icon.top"
-      [style.left]="icon.left"
-      [style.fontSize]="icon.size"
-      [style.color]="icon.color"
-      [style.textShadow]="'0 0 20px ' + icon.color + '44'"
-      [style.opacity]="icon.opacity"
-      [style.animation]="'floatDrift ' + icon.duration + 's linear ' + icon.delay + 's infinite'"
-    >
-      {{ icon.name }}
-    </div>
-  </div>
+
 
   <!-- ====== MAIN CONTENT GRID ====== -->
   <div

@@ -1,61 +1,62 @@
-<!-- ============================================================
-     NAVBAR — Fixed top navigation
-     Color scheme: #06080f bg, #5b8def accent, #a78bfa secondary,
-     #34d399 tertiary, #e8ecf4 text, #8a94a8 muted
-     Font: Outfit (main), JetBrains Mono (mono)
-     ============================================================ -->
-
 <nav [class]="navClasses()">
-  <div class="max-w-[1200px] mx-auto px-8 h-[72px] flex items-center justify-between">
-
-    <!-- ====== LOGO ====== -->
+  <div class="max-w-350mx-auto px-6 md:px-10 h-20 flex items-center justify-between">
+    <!-- ====== LOGO (far left) ====== -->
     <a
       (click)="scrollTo('hero')"
-      class="flex items-center gap-1 cursor-pointer select-none group"
+      role="button"
+      tabindex="0"
+      (keydown.enter)="scrollTo('hero')"
+      class="flex items-center gap-1.5 cursor-pointer select-none group mr-auto"
     >
       <span
-        class="font-extrabold text-[1.3rem] tracking-[-0.5px] bg-gradient-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] bg-clip-text text-transparent"
+        class="font-extrabold text-2xl tracking-[-0.5px] bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] bg-clip-text text-transparent"
       >
         JD
       </span>
-      <span class="font-mono font-medium text-[0.85rem] text-[#515a6e] group-hover:text-[#8a94a8] transition-colors duration-300">
+      <span
+        class="font-mono font-medium text-base text-[#515a6e] group-hover:text-[#8a94a8] transition-colors duration-300"
+      >
         .dev
       </span>
     </a>
 
-    <!-- ====== DESKTOP NAV LINKS ====== -->
-    <ul class="hidden md:flex items-center gap-1">
-      <li *ngFor="let link of navLinks">
-        <button
-          (click)="scrollTo(link.fragment)"
-          type="button"
-          class="relative px-4 py-2 rounded-lg text-[0.82rem] font-medium tracking-[0.3px] transition-all duration-300 cursor-pointer"
-          [ngClass]="{
-            'text-[#e8ecf4] bg-[rgba(91,141,239,0.08)]': isActive(link.fragment),
-            'text-[#8a94a8] hover:text-[#e8ecf4] hover:bg-[rgba(91,141,239,0.08)]': !isActive(link.fragment)
-          }"
-        >
-          {{ link.label }}
+    <!-- ====== DESKTOP NAV LINKS (centered) ====== -->
+    <ul class="hidden lg:flex items-center gap-1.5 mx-auto">
+      @for (link of navLinks; track link.fragment) {
+        <li>
+          <button
+            (click)="scrollTo(link.fragment)"
+            type="button"
+            class="relative px-5 py-2.5 rounded-xl text-[0.95rem] font-medium tracking-[0.2px] transition-all duration-300 cursor-pointer"
+            [ngClass]="{
+              'text-[#e8ecf4] bg-[rgba(91,141,239,0.1)]': isActive(link.fragment),
+              'text-[#8a94a8] hover:text-[#e8ecf4] hover:bg-[rgba(91,141,239,0.06)]': !isActive(
+                link.fragment
+              ),
+            }"
+          >
+            {{ link.label }}
 
-          <!-- Active indicator dot -->
-          <span
-            *ngIf="isActive(link.fragment)"
-            class="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-[1px] bg-[#5b8def] transition-all duration-300"
-          ></span>
-        </button>
-      </li>
+            <!-- Active indicator -->
+            @if (isActive(link.fragment)) {
+              <span
+                class="absolute bottom-1 left-1/2 -translate-x-1/2 w-5 h-[2.5px] rounded-full bg-[#5b8def] shadow-[0_0_8px_rgba(91,141,239,0.4)] transition-all duration-300"
+              ></span>
+            }
+          </button>
+        </li>
+      }
     </ul>
 
-    <!-- ====== CTA BUTTON (Desktop) ====== -->
+    <!-- ====== CTA BUTTON (far right) ====== -->
     <a
       (click)="scrollTo('contact')"
-      class="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-[0.8rem] font-semibold tracking-[0.2px] cursor-pointer
-             bg-gradient-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] text-white
-             shadow-[0_4px_24px_rgba(91,141,239,0.3)]
-             hover:shadow-[0_8px_32px_rgba(91,141,239,0.45)] hover:-translate-y-[2px]
-             active:scale-[0.97] transition-all duration-300"
+      role="button"
+      tabindex="0"
+      (keydown.enter)="scrollTo('contact')"
+      class="hidden lg:inline-flex items-center gap-2.5 ml-auto px-7 py-3 rounded-xl text-[0.92rem] font-semibold tracking-[0.2px] cursor-pointer bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] text-white shadow-[0_4px_24px_rgba(91,141,239,0.3)] hover:shadow-[0_8px_32px_rgba(91,141,239,0.45)] hover:-translate-y-[2px] active:scale-[0.97] transition-all duration-300"
     >
-      <i class="pi pi-send text-xs"></i>
+      <i class="pi pi-send text-sm"></i>
       Let's Talk
     </a>
 
@@ -64,61 +65,65 @@
       (click)="toggleMobileMenu()"
       type="button"
       aria-label="Toggle navigation menu"
-      class="md:hidden flex flex-col justify-center items-center gap-[5px] p-2 z-[110] cursor-pointer"
+      [attr.aria-expanded]="isMobileMenuOpen()"
+      class="lg:hidden flex flex-col justify-center items-center gap-1.5 p-3 -mr-2 rounded-xl hover:bg-[rgba(91,141,239,0.06)] z-110 cursor-pointer transition-colors duration-200"
     >
       <span
-        class="w-6 h-[2px] rounded-[2px] bg-[#e8ecf4] transition-all duration-300 origin-center"
+        class="w-6 h-0.5 rounded-full bg-[#e8ecf4] transition-all duration-300 origin-center"
         [ngClass]="{
-          'rotate-45 translate-y-[7px]': isMobileMenuOpen(),
-          'rotate-0 translate-y-0': !isMobileMenuOpen()
+          'rotate-45 translate-y-2': isMobileMenuOpen(),
+          'rotate-0 translate-y-0': !isMobileMenuOpen(),
         }"
       ></span>
       <span
-        class="w-6 h-[2px] rounded-[2px] bg-[#e8ecf4] transition-all duration-300"
+        class="w-6 h-0.5 rounded-full bg-[#e8ecf4] transition-all duration-300"
         [ngClass]="{
           'opacity-0 scale-x-0': isMobileMenuOpen(),
-          'opacity-100 scale-x-100': !isMobileMenuOpen()
+          'opacity-100 scale-x-100': !isMobileMenuOpen(),
         }"
       ></span>
       <span
-        class="w-6 h-[2px] rounded-[2px] bg-[#e8ecf4] transition-all duration-300 origin-center"
+        class="w-6 h-0.5 rounded-full bg-[#e8ecf4] transition-all duration-300 origin-center"
         [ngClass]="{
-          '-rotate-45 -translate-y-[7px]': isMobileMenuOpen(),
-          'rotate-0 translate-y-0': !isMobileMenuOpen()
+          '-rotate-45 -translate-y-2': isMobileMenuOpen(),
+          'rotate-0 translate-y-0': !isMobileMenuOpen(),
         }"
       ></span>
     </button>
   </div>
 
-  <!-- ====== MOBILE MENU OVERLAY ====== -->
+  <!-- ====== MOBILE MENU ====== -->
+
   <!-- Backdrop -->
-  <div
-    *ngIf="isMobileMenuOpen()"
-    (click)="closeMobileMenu()"
-    class="fixed inset-0 bg-[#06080f]/60 backdrop-blur-sm z-[99] md:hidden animate-in fade-in duration-200"
-  ></div>
+  @if (isMobileMenuOpen()) {
+    <div
+      (click)="closeMobileMenu()"
+      class="fixed inset-0 bg-[#06080f]/60 backdrop-blur-sm z-99 lg:hidden"
+      style="animation: fadeIn 0.2s ease-out"
+    ></div>
+  }
 
   <!-- Slide-in Panel -->
   <div
-    class="fixed top-0 right-0 w-[280px] h-screen z-[100] md:hidden
-           bg-[#06080f]/[0.97] backdrop-blur-[20px] border-l border-[rgba(100,140,255,0.08)]
-           transition-transform duration-400 ease-out"
+    class="fixed top-0 right-0 w-85 max-w-[85vw] h-screen z-100 lg:hidden bg-[#06080f]/97 backdrop-blur-xlborder-l border-[rgba(100,140,255,0.08)] transition-transform duration-300 ease-out flex flex-col"
     [ngClass]="{
       'translate-x-0': isMobileMenuOpen(),
-      'translate-x-full': !isMobileMenuOpen()
+      'translate-x-full': !isMobileMenuOpen(),
     }"
   >
     <!-- Panel Header -->
-    <div class="px-6 pt-6 pb-4 border-b border-[rgba(100,140,255,0.08)]">
+    <div class="px-7 pt-7 pb-5 border-b border-[rgba(100,140,255,0.08)] shrink-0">
       <div class="flex items-center justify-between">
-        <span class="font-extrabold text-lg bg-gradient-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] bg-clip-text text-transparent">
-          JD<span class="font-mono font-medium text-[0.85rem] text-[#515a6e]">.dev</span>
+        <span
+          class="font-extrabold text-2xl bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] bg-clip-text text-transparent"
+        >
+          JD<span class="font-mono font-medium text-base text-[#515a6e]">.dev</span>
         </span>
         <button
           (click)="closeMobileMenu()"
           type="button"
           aria-label="Close menu"
-          class="text-[#515a6e] hover:text-white transition-colors p-2"
+          class="w-10 h-10 rounded-xl flex items-center justify-center text-[#515a6e] hover:text-white hover:bg-[rgba(91,141,239,0.08)] transition-all duration-200 cursor-pointer"
         >
           <i class="pi pi-times text-lg"></i>
         </button>
@@ -126,77 +131,55 @@
     </div>
 
     <!-- Panel Links -->
-    <div class="px-4 pt-4 space-y-1">
-      <button
-        *ngFor="let link of navLinks; let i = index"
-        (click)="scrollTo(link.fragment)"
-        type="button"
-        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[0.88rem] font-medium transition-all duration-300 cursor-pointer"
-        [ngClass]="{
-          'text-[#e8ecf4] bg-[rgba(91,141,239,0.1)]': isActive(link.fragment),
-          'text-[#8a94a8] hover:text-[#e8ecf4] hover:bg-[rgba(91,141,239,0.06)]': !isActive(link.fragment)
-        }"
-        [style.animation-delay]="(i * 50) + 'ms'"
-      >
-        <i
-          [class]="link.icon"
-          class="text-sm w-5 text-center"
+    <div class="flex-1 overflow-y-auto px-5 pt-5 pb-4 space-y-1.5">
+      @for (link of navLinks; track link.fragment; let i = $index) {
+        <button
+          (click)="scrollTo(link.fragment)"
+          type="button"
+          class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-[1.05rem] font-medium transition-all duration-300 cursor-pointer"
           [ngClass]="{
-            'text-[#5b8def]': isActive(link.fragment),
-            'text-[#515a6e]': !isActive(link.fragment)
+            'text-[#e8ecf4] bg-[rgba(91,141,239,0.1)] border border-[rgba(91,141,239,0.12)]':
+              isActive(link.fragment),
+            'text-[#8a94a8] hover:text-[#e8ecf4] hover:bg-[rgba(91,141,239,0.06)] border border-transparent':
+              !isActive(link.fragment),
           }"
-        ></i>
-        {{ link.label }}
+        >
+          <!-- Label -->
+          <span>{{ link.label }}</span>
 
-        <!-- Active arrow -->
-        <i
-          *ngIf="isActive(link.fragment)"
-          class="pi pi-chevron-right text-[10px] text-[#5b8def] ml-auto"
-        ></i>
-      </button>
+          <!-- Active chevron -->
+          @if (isActive(link.fragment)) {
+            <i class="pi pi-chevron-right text-xs text-[#5b8def] ml-auto"></i>
+          }
+        </button>
+      }
     </div>
 
-    <!-- Panel Footer CTA -->
-    <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-[rgba(100,140,255,0.08)]">
+    <!-- Panel Footer -->
+    <div class="hrink-0 p-7 border-t border-[rgba(100,140,255,0.08)]">
+      <!-- CTA -->
       <button
         (click)="scrollTo('contact')"
         type="button"
-        class="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-[0.82rem] font-bold tracking-widest uppercase cursor-pointer
-               bg-gradient-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] text-white
-               shadow-[0_4px_24px_rgba(91,141,239,0.3)]
-               hover:shadow-[0_8px_32px_rgba(91,141,239,0.45)]
-               active:scale-[0.97] transition-all duration-300"
+        class="w-full flex items-center justify-center gap-2.5 px-5 py-4 rounded-2xl text-[0.95rem] font-bold tracking-[0.15em] uppercase cursor-pointer bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] text-white shadow-[0_4px_24px_rgba(91,141,239,0.3)] hover:shadow-[0_8px_32px_rgba(91,141,239,0.45)] active:scale-[0.97] transition-all duration-300"
       >
-        <i class="pi pi-send text-xs"></i>
+        <i class="pi pi-send text-sm"></i>
         Let's Talk
       </button>
 
-      <!-- Social row -->
-      <div class="flex items-center justify-center gap-4 mt-4">
-        <a
-          href="#"
-          class="w-9 h-9 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(100,140,255,0.08)]
-                 flex items-center justify-center text-[#515a6e] hover:text-[#5b8def] hover:border-[rgba(91,141,239,0.2)]
-                 transition-all duration-300"
-        >
-          <i class="pi pi-github text-sm"></i>
-        </a>
-        <a
-          href="#"
-          class="w-9 h-9 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(100,140,255,0.08)]
-                 flex items-center justify-center text-[#515a6e] hover:text-[#5b8def] hover:border-[rgba(91,141,239,0.2)]
-                 transition-all duration-300"
-        >
-          <i class="pi pi-linkedin text-sm"></i>
-        </a>
-        <a
-          href="#"
-          class="w-9 h-9 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(100,140,255,0.08)]
-                 flex items-center justify-center text-[#515a6e] hover:text-[#5b8def] hover:border-[rgba(91,141,239,0.2)]
-                 transition-all duration-300"
-        >
-          <i class="pi pi-envelope text-sm"></i>
-        </a>
+      <!-- Social Links -->
+      <div class="flex items-center justify-center gap-3 mt-5">
+        @for (social of socialLinks; track social.label) {
+          <a
+            [href]="social.href"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="social.label"
+            class="w-11 h-11 rounded-xl bg-[rgba(91,141,239,0.06)] border border-[rgba(100,140,255,0.08)] flex items-center justify-center text-[#515a6e] hover:text-[#5b8def] hover:bg-[rgba(91,141,239,0.1)] hover:border-[rgba(91,141,239,0.2)] active:scale-95 transition-all duration-300"
+          >
+            <i [class]="social.icon" class="text-base"></i>
+          </a>
+        }
       </div>
     </div>
   </div>
