@@ -26,12 +26,12 @@
               },
               {
                 "glob": "**/*",
-                "input": "src/assets"
+                "input": "assets",
+                "output": "assets"
               }
             ],
             "styles": [
               "src/styles.css"
-
             ]
           },
           "configurations": {
