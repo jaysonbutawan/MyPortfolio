@@ -1,13 +1,16 @@
-<section id="education" class="relative py-20 md:py-28 px-6 md:px-8 max-w-300 mx-auto">
+<section
+  id="education"
+  class="relative py-16 md:py-24 px-6 md:px-12 lg:px-20 xl:px-28 w-full mx-auto"
+>
   <!-- Section Header -->
-  <div class="mb-14">
+  <div class="mb-12 md:mb-16">
     <p
-      class="font-['JetBrains_Mono',monospace] text-4xl text-[#5b8def] tracking-[3px] uppercase opacity-80 mb-3"
+      class="font-['JetBrains_Mono',monospace] text-4xl text-[#5b8def] tracking-[4px] uppercase opacity-80 mb-3"
     >
       // Education
     </p>
     <h2
-      class="text-[2.2rem] md:text-[2.6rem] font-bold tracking-[-1px] leading-[1.15] text-[#e8ecf4]"
+      class="text-3xl sm:text-4xl md:text-[2.8rem] font-bold tracking-[-1px] leading-[1.15] text-[#e8ecf4]"
     >
       Academic
       <span
@@ -16,59 +19,85 @@
         background
       </span>
     </h2>
+    <p class="text-[#515a6e] text-[0.92rem] mt-4 max-w-xl leading-relaxed">
+      My academic journey and professional certifications that shaped my expertise in software
+      development.
+    </p>
   </div>
 
   <!-- Education Cards -->
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-5 lg:gap-6">
     @for (edu of educations; track edu.degree; let i = $index) {
       <div
         #eduCard
-        class="edu-card group flex flex-col md:flex-row items-start gap-5 md:gap-6 bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)] rounded-2xl p-6 md:p-7 opacity-0 translate-y-8 hover:bg-[rgba(20,30,60,0.8)] hover:border-[rgba(100,160,255,0.2)] hover:translate-x-1 transition-all duration-500 ease-in-out cursor-default"
+        class="edu-card group relative flex flex-col md:flex-row items-start gap-5 md:gap-8 bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)] rounded-3xl p-6 sm:p-7 md:p-8 lg:p-9 opacity-0 translate-y-10 hover:bg-[rgba(20,30,60,0.8)] hover:border-[rgba(100,160,255,0.2)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.3)] transition-all duration-500 ease-in-out cursor-default overflow-hidden"
         [style.transitionDelay]="i * 150 + 'ms'"
       >
+        <!-- Left: Icon + Year -->
         <div
-          class="flex md:flex-col items-center md:items-start gap-3 md:gap-2 md:min-w-30 shrink-0"
+          class="flex md:flex-col items-center md:items-start gap-4 md:gap-3 md:min-w-35 hrink-0"
         >
+          <!-- Icon — larger -->
           <div
-            class="w-10 h-10 rounded-xl bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.1)] flex items-center justify-center text-base group-hover:bg-[rgba(91,141,239,0.12)] group-hover:border-[rgba(91,141,239,0.2)] transition-colors duration-300"
+            class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.1)] flex items-center justify-center text-xl sm:text-2xl group-hover:bg-[rgba(91,141,239,0.14)] group-hover:border-[rgba(91,141,239,0.25)] group-hover:shadow-[0_0_20px_rgba(91,141,239,0.15)] transition-all duration-400"
           >
             {{ edu.icon }}
           </div>
 
-          <p
-            class="font-['JetBrains_Mono',monospace] text-[0.78rem] text-[#5b8def] whitespace-nowrap tracking-[0.5px]"
+          <!-- Year badge -->
+          <div
+            class="font-['JetBrains_Mono',monospace] text-[0.82rem] sm:text-[0.85rem] text-[#5b8def] whitespace-nowrap tracking-[0.5px] px-3 py-1 rounded-lg bg-[rgba(91,141,239,0.05)] group-hover:bg-[rgba(91,141,239,0.1)] transition-colors duration-300"
           >
             {{ edu.year }}
-          </p>
+          </div>
         </div>
 
+        <!-- Right: Content -->
         <div class="min-w-0 flex-1">
+          <!-- Degree — larger -->
           <h3
-            class="text-[1.05rem] font-semibold text-[#e8ecf4] mb-1 group-hover:text-white transition-colors duration-300"
+            class="text-lg sm:text-xl font-semibold text-[#e8ecf4] mb-1.5 group-hover:text-white transition-colors duration-300 leading-snug"
           >
             {{ edu.degree }}
           </h3>
-          <p class="text-[0.88rem] text-[#8a94a8] mb-3">
+
+          <!-- School — larger -->
+          <p class="text-[0.92rem] sm:text-base text-[#8a94a8] mb-4">
             {{ edu.school }}
           </p>
-          <p class="text-[0.8rem] text-[#515a6e] leading-[1.7]">
+
+          <!-- Notes — larger, better spacing -->
+          <p class="text-[0.85rem] sm:text-[0.9rem] text-[#6b7280] leading-[1.8]">
             {{ edu.note }}
           </p>
         </div>
 
+        <!-- Hover chevron -->
         <div
-          class="hidden md:flex items-center self-center opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+          class="hidden md:flex items-center self-center opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-400 delay-100"
         >
-          <i class="pi pi-chevron-right text-[0.7rem] text-[#5b8def]"></i>
+          <div
+            class="w-8 h-8 rounded-full bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.1)] flex items-center justify-center group-hover:bg-[rgba(91,141,239,0.14)] transition-colors duration-300"
+          >
+            <i class="pi pi-chevron-right text-[0.65rem] text-[#5b8def]"></i>
+          </div>
         </div>
+
+        <!-- Left accent bar — slides in on hover -->
+        <div
+          class="absolute left-0 top-0 bottom-0 w-0.75 bg-linear-to-b from-[#5b8def] via-[#a78bfa] to-[#34d399] scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-out origin-top"
+        ></div>
       </div>
     } @empty {
-      <div class="text-slate-500 italic p-4 text-center">No educational records found.</div>
+      <div
+        class="text-[#515a6e] italic p-8 text-center text-[0.92rem] bg-[rgba(14,20,40,0.4)] rounded-2xl border border-[rgba(100,140,255,0.05)]"
+      >
+        No educational records found.
+      </div>
     }
   </div>
 </section>
 
-<!-- Scroll-triggered animation -->
 <style>
   .edu-card.is-visible {
     opacity: 1 !important;
@@ -76,6 +105,6 @@
   }
 
   .edu-card.is-visible:hover {
-    transform: translateX(4px) !important;
+    transform: translateX(6px) !important;
   }
 </style>

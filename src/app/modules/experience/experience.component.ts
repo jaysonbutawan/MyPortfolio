@@ -5,6 +5,7 @@ import {
   QueryList,
   ElementRef,
   ViewChildren,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -23,36 +24,38 @@ interface Experience {
   templateUrl: './experience.component.html',
 })
 export class ExperienceComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('sectionHeader') sectionHeader!: ElementRef;
   @ViewChildren('timelineItem') timelineItems!: QueryList<ElementRef>;
 
   private observer: IntersectionObserver | null = null;
 
   experiences: Experience[] = [
     {
-      date: 'Jan 2023 — Present',
-      role: 'Senior Full-Stack Developer',
-      company: 'TechVault Solutions',
+      date: 'Jan 2025 — Present',
+      role: 'Full-Stack Developer',
+      company: 'Theobrotect Solutions',
       description:
-        'Lead the development of enterprise-grade web applications using Angular 16+ and Laravel 10. Architect RESTful APIs serving 50k+ daily requests, implement CI/CD pipelines, and mentor a team of 4 junior developers.',
-      tech: ['Angular', 'Laravel', 'MySQL', 'Docker', 'AWS'],
+        'Lead the development of mobile & web applications using Angular for web and Flutter for mobile, and Laravel for backend.',
+      tech: ['Angular', 'Laravel', 'PostgreSQL', 'Docker', 'CloudFlare', 'Flutter'],
     },
     {
-      date: 'Mar 2021 — Dec 2022',
+      date: 'Mar 2024 — Dec 2024',
       role: 'Full-Stack Developer',
-      company: 'CloudBridge Digital',
+      company: '',
       description:
-        'Built and maintained multiple client-facing SaaS platforms. Designed database schemas for complex business logic, integrated third-party APIs (payment gateways, maps, notifications), and optimized front-end performance reducing load times by 40%.',
+        '',
       tech: ['Angular', 'PHP', 'REST API', 'Git', 'TailwindCSS'],
     },
     {
-      date: 'Jun 2019 — Feb 2021',
-      role: 'Frontend Developer',
-      company: 'Pixel & Code Studio',
+      date: 'Jun 2023 — Feb 2024',
+      role: '',
+      company: '',
       description:
-        'Developed responsive web interfaces from Figma designs, implemented component-based architecture with Angular, and collaborated with backend teams to integrate APIs for real-time data dashboards.',
+        '',
       tech: ['Angular', 'TypeScript', 'SCSS', 'Bootstrap'],
     },
   ];
+
 
   ngAfterViewInit(): void {
     this.observer = new IntersectionObserver(
@@ -63,9 +66,15 @@ export class ExperienceComponent implements AfterViewInit, OnDestroy {
           }
         });
       },
-      { threshold: 0.15, rootMargin: '0px 0px -60px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
     );
 
+    // Observe header
+    if (this.sectionHeader) {
+      this.observer.observe(this.sectionHeader.nativeElement);
+    }
+
+    // Observe timeline items
     this.timelineItems.forEach((item) => {
       this.observer!.observe(item.nativeElement);
     });

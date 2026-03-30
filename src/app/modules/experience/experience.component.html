@@ -1,13 +1,19 @@
-<section id="experience" class="relative py-20 md:py-28 px-6 md:px-8 max-w-300 mx-auto">
-  <!-- Section Header -->
-  <div class="mb-14">
+<section
+  id="experience"
+  class="relative py-20 md:py-28 lg:py-32 px-6 md:px-12 lg:px-20 xl:px-28 w-full mx-auto"
+>
+  <!-- Section Header with entrance animation -->
+  <div
+    #sectionHeader
+    class="section-reveal mb-16 md:mb-20 opacity-0 translate-y-6 transition-all duration-700 ease-in-out"
+  >
     <p
-      class="font-['JetBrains_Mono',monospace] text-4xl text-[#5b8def] tracking-[3px] uppercase opacity-80 mb-3"
+      class="font-['JetBrains_Mono',monospace] text-4xl text-[#5b8def] tracking-[4px] uppercase opacity-80 mb-4"
     >
       // Work Experience
     </p>
     <h2
-      class="text-[2.2rem] md:text-[2.6rem] font-bold tracking-[-1px] leading-[1.15] text-[#e8ecf4]"
+      class="text-[2rem] sm:text-[2.4rem] md:text-[2.8rem] lg:text-[3.2rem] font-bold tracking-[-1.5px] leading-[1.1] text-[#e8ecf4]"
     >
       Where I've
       <span
@@ -16,70 +22,149 @@
         worked
       </span>
     </h2>
+    <p class="mt-4 text-[#515a6e] text-[0.95rem] leading-relaxed max-w-xl">
+      A timeline of the roles and teams that have shaped my journey as a developer.
+    </p>
   </div>
 
   <!-- Timeline Container -->
-  <div class="relative pl-8 md:pl-12">
-    <!-- Vertical Line -->
+  <div class="relative pl-10 md:pl-14 lg:pl-16">
+    <!-- Vertical Line — animated gradient -->
     <div
-      class="absolute left-1.75 md:left-1.75 top-0 bottom-0 w-0.5 bg-linear-to-b from-[#5b8def] via-[#a78bfa] to-transparent opacity-20"
+      class="absolute left-2.25 md:left-2.25 top-0 bottom-0 w-0.5 bg-linear-to-b from-[#5b8def] via-[#a78bfa]/60 to-transparent opacity-25"
     ></div>
 
     <!-- Timeline Items -->
     @for (exp of experiences; track exp.role; let i = $index) {
       <div
         #timelineItem
-        class="timeline-item relative mb-10 last:mb-0 opacity-0 translate-y-8 transition-all duration-700 ease-in-out"
-        [style.transitionDelay]="i * 150 + 'ms'"
+        class="timeline-item relative mb-12 md:mb-14 last:mb-0 opacity-0 translate-y-10 transition-all duration-800 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        [style.transitionDelay]="i * 180 + 'ms'"
       >
+        <!-- Timeline Dot — pulses when card is hovered -->
         <div
-          class="absolute -left-8 md:-left-12 top-2 w-3.5 h-3.5rounded-full bg-[#06080f] border-2 border-[#5b8def] shadow-[0_0_12px_rgba(91,141,239,0.3)] z-10"
-        ></div>
-
-        <div
-          class="group bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)] rounded-2xl p-6 md:p-7 hover:bg-[rgba(20,30,60,0.8)] hover:border-[rgba(100,160,255,0.2)] hover:translate-x-1.5 transition-all duration-350 cursor-default"
+          class="absolute -left-10 md:-left-14 lg:-left-16 top-8 flex items-center justify-center"
         >
-          <p
-            class="font-['JetBrains_Mono',monospace] text-[0.72rem] text-[#5b8def] tracking-[0.5px] mb-2"
-          >
-            {{ exp.date }}
-          </p>
+          <!-- Outer pulse ring -->
+          <div
+            class="absolute w-7 h-7 rounded-full bg-[rgba(91,141,239,0.08)] animate-[dotPulse_3s_ease-in-out_infinite]"
+          ></div>
+          <!-- Dot -->
+          <div
+            class="relative w-4.5 h-4.5 rounded-full bg-[#06080f] border-[2.5px] border-[#5b8def] shadow-[0_0_16px_rgba(91,141,239,0.35)] z-10 transition-all duration-300 group-[.timeline-item:hover]:border-[#7ba8ff] group-[.timeline-item:hover]:shadow-[0_0_24px_rgba(91,141,239,0.5)]"
+          ></div>
+        </div>
 
-          <h3 class="text-[1.15rem] font-bold text-[#e8ecf4] mb-1">
+        <!-- Card -->
+        <div
+          class="group relative bg-[rgba(14,20,40,0.5)] border border-[rgba(100,140,255,0.08)] rounded-3xl p-7 sm:p-8 md:p-9 lg:p-10 backdrop-blur-sm hover:bg-[rgba(20,30,60,0.7)] hover:border-[rgba(100,160,255,0.2)] hover:translate-x-2 hover:-translate-y-0.5 hover:shadow-[0_16px_48px_rgba(0,0,0,0.3),0_0_0_1px_rgba(91,141,239,0.06)] transition-all duration-500 ease-in-out cursor-default overflow-hidden"
+        >
+          <!-- Hover gradient shine -->
+          <div
+            class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 bg-linear-to-br from-[rgba(91,141,239,0.04)] via-transparent to-[rgba(167,139,250,0.04)] transition-opacity duration-500 pointer-events-none"
+          ></div>
+
+          <!-- Top row: Date + Company badge -->
+          <div class="relative flex flex-wrap items-center gap-3 mb-5">
+            <!-- Date badge -->
+            <span
+              class="inline-flex items-center gap-2 font-['JetBrains_Mono',monospace] text-[0.75rem] text-[#5b8def] tracking-[0.5px] px-3.5 py-1.5 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(91,141,239,0.1)] group-hover:bg-[rgba(91,141,239,0.1)] group-hover:border-[rgba(91,141,239,0.18)] transition-colors duration-300"
+            >
+              <svg
+                class="w-3.5 h-3.5 opacity-60"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              {{ exp.date }}
+            </span>
+
+            <!-- Company badge -->
+            <span
+              class="inline-flex items-center gap-1.5 text-[0.75rem] font-medium text-[#8a94a8] px-3 py-1.5 rounded-lg bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] group-hover:text-[#b0b8c8] transition-colors duration-300"
+            >
+              <svg
+                class="w-3.5 h-3.5 opacity-50"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M3 21h18M3 7v1a3 3 0 006 0V7m0 1a3 3 0 006 0V7m0 1a3 3 0 006 0V7H3l2-4h14l2 4M5 21V10.7M19 21V10.7"
+                />
+              </svg>
+              {{ exp.company }}
+            </span>
+          </div>
+
+          <!-- Role title -->
+          <h3
+            class="relative text-lg sm:text-xl md:text-[1.35rem] font-bold text-[#e8ecf4] leading-snug mb-4 group-hover:text-white transition-colors duration-300"
+          >
             {{ exp.role }}
           </h3>
 
-          <p class="text-[0.88rem] text-[#8a94a8] mb-4">
-            {{ exp.company }}
-          </p>
-
-          <p class="text-[0.85rem] text-[#515a6e] leading-[1.7] mb-4">
+          <!-- Description -->
+          <p
+            class="relative text-[0.9rem] md:text-[0.95rem] text-[#6b7280] leading-[1.85] mb-6 group-hover:text-[#8a94a8] transition-colors duration-300"
+          >
             {{ exp.description }}
           </p>
 
-          <div class="flex flex-wrap gap-1.5">
+          <!-- Tech Tags -->
+          <div class="relative flex flex-wrap gap-2">
             @for (tech of exp.tech; track tech) {
               <span
-                class="font-['JetBrains_Mono',monospace] text-[0.65rem] px-2.5 py-0.75 rounded bg-[rgba(52,211,153,0.06)] border border-[rgba(52,211,153,0.12)] text-[#34d399] group-hover:bg-[rgba(52,211,153,0.1)] group-hover:border-[rgba(52,211,153,0.2)] transition-colors duration-300"
+                class="font-['JetBrains_Mono',monospace] text-[0.7rem] px-3.5 py-1.5 rounded-lg bg-[rgba(52,211,153,0.05)] border border-[rgba(52,211,153,0.1)] text-[#34d399] group-hover:bg-[rgba(52,211,153,0.1)] group-hover:border-[rgba(52,211,153,0.2)] group-hover:shadow-[0_0_12px_rgba(52,211,153,0.06)] transition-all duration-300"
               >
                 {{ tech }}
               </span>
             } @empty {
-              <span class="text-[0.6rem] text-slate-600 uppercase tracking-tighter"
-                >Core Development</span
-              >
+              <span class="text-[0.65rem] text-slate-600 uppercase tracking-tight">
+                Core Development
+              </span>
             }
           </div>
+
+          <!-- Bottom accent line — grows on hover -->
+          <div
+            class="absolute bottom-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-[rgba(91,141,239,0.15)] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center"
+          ></div>
         </div>
       </div>
     }
   </div>
 </section>
 
-<!-- Scroll-triggered animation: .is-visible is added by IntersectionObserver -->
 <style>
+  /* Scroll-triggered entrance */
   .timeline-item.is-visible {
     opacity: 1 !important;
+    transform: translateY(0) translateX(0) !important;
+  }
+
+  .section-reveal.is-visible {
+    opacity: 1 !important;
     transform: translateY(0) !important;
+  }
+
+  /* Dot pulse ring */
+  @keyframes dotPulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.4;
+    }
+    50% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
   }
 </style>

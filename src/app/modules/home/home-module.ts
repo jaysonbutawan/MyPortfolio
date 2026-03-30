@@ -20,6 +20,6 @@ import { ContactComponent } from "../contact/contact.component";
     <app-projects />
     <app-education />
     <app-contact />
-  `,
+ `,
 })
-export class HomeComponent {}
+export class HomeComponent { }

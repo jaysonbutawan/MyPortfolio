@@ -5,6 +5,7 @@ import {
   ElementRef,
   ViewChild,
   signal,
+  NgZone,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -26,6 +27,7 @@ interface ContactLink {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact.component.html',
+  styleUrl: './contact.component.css',
 })
 export class ContactComponent implements AfterViewInit, OnDestroy {
   @ViewChild('contactSection') contactSection!: ElementRef;
@@ -65,7 +67,10 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
     },
   ];
 
-  constructor(private fb: FormBuilder) {
+ constructor(
+    private fb: FormBuilder,
+    private ngZone: NgZone
+  ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -75,22 +80,50 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this.isVisible.set(true);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    this.observer.observe(this.contactSection.nativeElement);
+    // Run observer outside Angular zone for performance
+    this.ngZone.runOutsideAngular(() => {
+      // Small delay to ensure DOM is fully rendered
+      setTimeout(() => {
+        this.setupObserver();
+      }, 200);
+    });
   }
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
+  }
+
+  private setupObserver(): void {
+    // Check if IntersectionObserver is supported
+    if (!('IntersectionObserver' in window)) {
+      // Fallback: just show everything
+      this.ngZone.run(() => this.isVisible.set(true));
+      return;
+    }
+
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Run inside Angular zone so change detection picks it up
+            this.ngZone.run(() => {
+              this.isVisible.set(true);
+            });
+            // Stop observing once visible — animation only plays once
+            this.observer?.disconnect();
+          }
+        });
+      },
+      {
+        threshold: 0.05,          // Trigger when just 5% is visible
+        rootMargin: '0px 0px -40px 0px', // Slight offset from bottom
+      }
+    );
+
+    const el = this.contactSection?.nativeElement;
+    if (el) {
+      this.observer.observe(el);
+    }
   }
 
   onSubmit(): void {
@@ -98,14 +131,17 @@ export class ContactComponent implements AfterViewInit, OnDestroy {
 
     this.isSending.set(true);
 
-    // Simulate API call — replace with your actual service
+    // Replace with your actual HTTP service
     setTimeout(() => {
       this.isSending.set(false);
       this.isSent.set(true);
       this.contactForm.reset();
 
-      // Reset success state after 4 seconds
       setTimeout(() => this.isSent.set(false), 4000);
     }, 1500);
+  }
+
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

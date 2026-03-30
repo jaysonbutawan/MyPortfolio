@@ -1,13 +1,16 @@
-<section id="projects" class="relative py-20 md:py-28 px-6 md:px-8 max-w-300 mx-auto">
+<section
+  id="projects"
+  class="relative py-16 md:py-24 px-6 md:px-12 lg:px-20 xl:px-28 w-full mx-auto"
+>
   <!-- Section Header -->
-  <div class="mb-14">
+  <div class="mb-12 md:mb-16">
     <p
       class="font-['JetBrains_Mono',monospace] text-4xl text-[#5b8def] tracking-[3px] uppercase opacity-80 mb-3"
     >
       // Featured Projects
     </p>
     <h2
-      class="text-[2.2rem] md:text-[2.6rem] font-bold tracking-[-1px] leading-[1.15] text-[#e8ecf4]"
+      class="text-3xl sm:text-4xl md:text-[2.8rem] font-bold tracking-[-1px] leading-[1.15] text-[#e8ecf4]"
     >
       Things I've
       <span
@@ -16,75 +19,99 @@
         built
       </span>
     </h2>
+    <p class="text-[#515a6e] text-[0.92rem] mt-4 max-w-xl leading-relaxed">
+      A selection of projects I've designed and developed — from enterprise platforms to real-time
+      applications.
+    </p>
   </div>
 
   <!-- Project Cards Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-    <div
-      *ngFor="let project of projects; let i = index"
-      #projectCard
-      class="project-card group bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)] rounded-2xl overflow-hidden opacity-0 translate-y-8 hover:-translate-y-1.5 hover:border-[rgba(100,160,255,0.2)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.35)] transition-all duration-400 ease-in-out cursor-default"
-      [style.transitionDelay]="i * 120 + 'ms'"
-    >
-      <!-- Banner -->
-      <div class="relative h-40 overflow-hidden">
-        <!-- Gradient Background -->
-        <div class="absolute inset-0 opacity-60 bg-linear-to-br" [ngClass]="project.gradient"></div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+    @for (project of projects; track project.title; let i = $index) {
+      <div
+        #projectCard
+        class="project-card group relative bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)] rounded-3xl overflow-hidden opacity-0 translate-y-10 hover:border-[rgba(100,160,255,0.2)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.4)] transition-all duration-500 ease-in-out cursor-default"
+        [style.transitionDelay]="i * 130 + 'ms'"
+      >
+        <!-- Banner — taller for more visual impact -->
+        <div class="relative h-48 sm:h-52 md:h-48 lg:h-56 overflow-hidden">
+          <!-- Gradient Background -->
+          <div
+            class="absolute inset-0 opacity-60 bg-linear-to-br transition-opacity duration-500 group-hover:opacity-80"
+            [ngClass]="project.gradient"
+          ></div>
 
-        <!-- Grid Pattern Overlay -->
-        <div
-          class="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle,#ffffff_1px,transparent_1px)] bg-size-[20px_20px]"
-        ></div>
+          <!-- Dot grid pattern -->
+          <div
+            class="absolute inset-0 opacity-[0.04]"
+            style="
+              background-image: radial-gradient(circle, #ffffff 1px, transparent 1px);
+              background-size: 24px 24px;
+            "
+          ></div>
 
-        <!-- Icon -->
-        <div
-          class="absolute inset-0 flex items-center justify-center text-5xl opacity-30 group-hover:opacity-50 group-hover:scale-110 transition-all duration-500"
-        >
-          {{ project.icon }}
-        </div>
-
-        <!-- Shine effect on hover -->
-        <div
-          class="absolute inset-0 bg-linear-to-r from-transparent via-white/3 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"
-        ></div>
-      </div>
-
-      <!-- Card Body -->
-      <div class="p-6 md:p-7">
-        <!-- Project Type -->
-        <p
-          class="font-['JetBrains_Mono',monospace] text-[0.65rem] text-[#a78bfa] tracking-[1.5px] uppercase mb-2"
-        >
-          {{ project.type }}
-        </p>
-
-        <!-- Title -->
-        <h3
-          class="text-[1.1rem] font-bold text-[#e8ecf4] mb-3 group-hover:text-white transition-colors duration-300"
-        >
-          {{ project.title }}
-        </h3>
-
-        <!-- Description -->
-        <p class="text-[0.82rem] text-[#515a6e] leading-[1.7] mb-5">
-          {{ project.description }}
-        </p>
-
-        <!-- Tech Stack Tags -->
-        <div class="flex flex-wrap gap-1.5">
-          <span
-            *ngFor="let tech of project.stack"
-            class="font-['JetBrains_Mono',monospace] text-[0.65rem] px-2.5 py-0.75rounded bg-[rgba(91,141,239,0.06)] border border-[rgba(100,140,255,0.08)] text-[#8a94a8] group-hover:text-[#7ba8ff] group-hover:border-[rgba(91,141,239,0.15)] transition-colors duration-300"
+          <!-- Icon — larger, more animated -->
+          <div
+            class="absolute inset-0 flex items-center justify-center text-6xl sm:text-7xl opacity-25 group-hover:opacity-50 group-hover:scale-115 transition-all duration-600 ease-out"
           >
-            {{ tech }}
-          </span>
+            {{ project.icon }}
+          </div>
+
+          <!-- Shine sweep on hover -->
+          <div
+            class="absolute inset-0 bg-linear-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 ease-out"
+          ></div>
+
+          <!-- Top-right badge -->
+          <div
+            class="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/30 backdrop-blur-md border border-white/10 text-[0.6rem] font-['JetBrains_Mono',monospace] text-white/70 uppercase tracking-[1px] opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 delay-100"
+          >
+            {{ project.type }}
+          </div>
         </div>
+
+        <!-- Card Body — more padding, bigger text -->
+        <div class="p-6 sm:p-7 md:p-8">
+          <!-- Project Type -->
+          <p
+            class="font-['JetBrains_Mono',monospace] text-[0.7rem] text-[#a78bfa] tracking-[1.5px] uppercase mb-3"
+          >
+            {{ project.type }}
+          </p>
+
+          <!-- Title — larger -->
+          <h3
+            class="text-lg sm:text-xl font-bold text-[#e8ecf4] mb-3 group-hover:text-white transition-colors duration-300 leading-snug"
+          >
+            {{ project.title }}
+          </h3>
+
+          <!-- Description — larger, better line height -->
+          <p class="text-[0.88rem] sm:text-[0.92rem] text-[#6b7280] leading-[1.8] mb-6">
+            {{ project.description }}
+          </p>
+
+          <!-- Tech Stack Tags — larger -->
+          <div class="flex flex-wrap gap-2">
+            @for (tech of project.stack; track tech) {
+              <span
+                class="font-['JetBrains_Mono',monospace] text-[0.7rem] px-3 py-1 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(100,140,255,0.08)] text-[#8a94a8] group-hover:text-[#7ba8ff] group-hover:bg-[rgba(91,141,239,0.1)] group-hover:border-[rgba(91,141,239,0.18)] transition-all duration-300"
+              >
+                {{ tech }}
+              </span>
+            }
+          </div>
+        </div>
+
+        <!-- Bottom accent line — slides in on hover -->
+        <div
+          class="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left"
+        ></div>
       </div>
-    </div>
+    }
   </div>
 </section>
 
-<!-- Scroll-triggered animation -->
 <style>
   .project-card.is-visible {
     opacity: 1 !important;
@@ -92,6 +119,6 @@
   }
 
   .project-card.is-visible:hover {
-    transform: translateY(-6px) !important;
+    transform: translateY(-8px) !important;
   }
 </style>

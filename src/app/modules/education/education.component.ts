@@ -29,24 +29,24 @@ export class EducationComponent implements AfterViewInit, OnDestroy {
 
   educations: Education[] = [
     {
-      year: '2015 — 2019',
+      year: '2023 — Present',
       degree: 'BS in Information Technology',
       school: 'Aces Tagum College',
       note: "Specialized in web technologies and software engineering. Dean's Lister . Capstone project on real-time inventory management systems.",
       icon: '🎓',
     },
     {
-      year: '2021',
-      degree: 'Angular Advanced Certification',
-      school: 'Udemy / Online',
-      note: 'Completed advanced coursework in Angular architecture, RxJS patterns, state management with NgRx, and performance optimization techniques.',
+      year: '',
+      degree: '',
+      school: '',
+      note: '',
       icon: '📜',
     },
     {
-      year: '2022',
-      degree: 'AWS Cloud Practitioner',
-      school: 'Amazon Web Services',
-      note: 'Foundational understanding of AWS Cloud services, architecture, security, and pricing models for cloud-native application deployment.',
+      year: '',
+      degree: '',
+      school: '',
+      note: '',
       icon: '☁️',
     },
   ];

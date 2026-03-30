@@ -1,29 +1,23 @@
-<!-- ============================================================
-     CONTACT SECTION — Info + Form
-     Two-column: contact links (left) + form (right)
-     Uses ReactiveFormsModule for validation.
-     ============================================================ -->
-
 <section
   id="contact"
   #contactSection
-  class="relative py-20 md:py-28 px-6 md:px-8 max-w-300 mx-auto"
+  class="relative py-16 md:py-24 px-6 md:px-12 lg:px-20 xl:px-28 w-full mx-auto"
 >
   <!-- Section Header -->
   <div
-    class="mb-14 transition-all duration-700 ease-out"
-    [ngClass]="{
-      'opacity-100 translate-y-0': isVisible(),
-      'opacity-0 translate-y-8': !isVisible()
-    }"
+    class="mb-12 md:mb-16 transition-all duration-700 ease-out"
+    [class.opacity-100]="isVisible()"
+    [class.translate-y-0]="isVisible()"
+    [class.opacity-0]="!isVisible()"
+    [class.translate-y-10]="!isVisible()"
   >
     <p
-      class="font-['JetBrains_Mono',monospace] text-5xl text-[#5b8def] tracking-[3px] uppercase opacity-80 mb-3"
+      class="font-['JetBrains_Mono',monospace] text-4xl text-[#5b8def] tracking-[3px] uppercase opacity-80 mb-3"
     >
       // Get In Touch
     </p>
     <h2
-      class="text-[2.2rem] md:text-[2.6rem] font-bold tracking-[-1px] leading-[1.15] text-[#e8ecf4]"
+      class="text-3xl sm:text-4xl md:text-[2.8rem] font-bold tracking-[-1px] leading-[1.15] text-[#e8ecf4]"
     >
       Let's
       <span
@@ -32,229 +26,205 @@
         connect
       </span>
     </h2>
+    <p class="text-[#515a6e] text-[0.92rem] mt-4 max-w-xl leading-relaxed">
+      Have a project in mind or just want to chat? I'd love to hear from you.
+    </p>
   </div>
 
   <!-- Two Column Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
-
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
     <!-- ====== LEFT: Contact Info ====== -->
     <div
-      class="transition-all duration-700 delay-100 ease-out"
-      [ngClass]="{
-        'opacity-100 translate-y-0': isVisible(),
-        'opacity-0 translate-y-8': !isVisible()
-      }"
+      class="transition-all duration-700 delay-150 ease-out"
+      [class.opacity-100]="isVisible()"
+      [class.translate-y-0]="isVisible()"
+      [class.opacity-0]="!isVisible()"
+      [class.translate-y-10]="!isVisible()"
     >
-      <p class="text-[#8a94a8] text-[0.95rem] leading-[1.8] mb-8">
-        I'm always open to discussing new projects, creative ideas, or
-        opportunities to be part of something great. Feel free to reach out
-        through any of these channels or drop me a message.
+      <p class="text-[#8a94a8] text-[0.95rem] sm:text-base leading-[1.85] mb-10">
+        I'm always open to discussing new projects, creative ideas, or opportunities to be part of
+        something great. Feel free to reach out through any of these channels or drop me a message.
       </p>
 
       <!-- Contact Links -->
-      <div class="flex flex-col gap-2">
-        <a
-          *ngFor="let link of contactLinks"
-          [href]="link.href"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group flex items-center gap-3 px-4 py-3 rounded-xl
-                 text-[#8a94a8] hover:text-[#e8ecf4]
-                 hover:bg-[rgba(91,141,239,0.06)]
-                 hover:translate-x-1
-                 transition-all duration-300"
-        >
-          <!-- Icon -->
-          <div
-            class="w-9 h-9 rounded-lg shrink-0
-                   bg-[rgba(91,141,239,0.08)] border border-[rgba(100,140,255,0.08)]
-                   flex items-center justify-center text-sm
-                   group-hover:bg-[rgba(91,141,239,0.12)] group-hover:border-[rgba(91,141,239,0.2)]
-                   transition-colors duration-300"
+      <div class="flex flex-col gap-2.5">
+        @for (link of contactLinks; track link.label; let i = $index) {
+          <a
+            [href]="link.href"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group relative flex items-center gap-4 px-5 py-4 rounded-2xl text-[#8a94a8] hover:text-[#e8ecf4] hover:bg-[rgba(91,141,239,0.06)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] transition-all duration-500 ease-out overflow-hidden"
+            [class.opacity-100]="isVisible()"
+            [class.translate-x-0]="isVisible()"
+            [class.opacity-0]="!isVisible()"
+            [class.-translate-x-4]="!isVisible()"
+            [style.transitionDelay]="isVisible() ? 250 + i * 100 + 'ms' : '0ms'"
           >
-            {{ link.icon }}
-          </div>
-
-          <!-- Text -->
-          <div class="min-w-0">
-            <p
-              class="text-[0.65rem] font-bold text-[#515a6e] uppercase tracking-[1px] leading-none mb-0.5
-                     group-hover:text-[#8a94a8] transition-colors duration-300"
+            <!-- Icon -->
+            <div
+              class="w-12 h-12 rounded-xl shrink-0 bg-[rgba(91,141,239,0.08)] border border-[rgba(100,140,255,0.08)] flex items-center justify-center text-lg group-hover:bg-[rgba(91,141,239,0.14)] group-hover:border-[rgba(91,141,239,0.22)] group-hover:shadow-[0_0_16px_rgba(91,141,239,0.12)] transition-all duration-300"
             >
-              {{ link.label }}
-            </p>
-            <p class="text-[0.88rem] truncate">
-              {{ link.value }}
-            </p>
-          </div>
+              {{ link.icon }}
+            </div>
 
-          <!-- Arrow -->
-          <i
-            class="pi pi-arrow-up-right text-[0.65rem] ml-auto
-                   opacity-0 -translate-x-1
-                   group-hover:opacity-100 group-hover:translate-x-0
-                   transition-all duration-300 text-[#5b8def]"
-          ></i>
-        </a>
+            <!-- Text -->
+            <div class="min-w-0 flex-1">
+              <p
+                class="text-[0.7rem] font-bold text-[#515a6e] uppercase tracking-[1.5px] leading-none mb-1 group-hover:text-[#8a94a8] transition-colors duration-300"
+              >
+                {{ link.label }}
+              </p>
+              <p class="text-[0.95rem] sm:text-base truncate font-medium">
+                {{ link.value }}
+              </p>
+            </div>
+
+            <!-- Arrow -->
+            <div
+              class="w-8 h-8 rounded-full flex items-center justify-center bg-[rgba(91,141,239,0.06)] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+            >
+              <i class="pi pi-arrow-up-right text-[0.6rem] text-[#5b8def]"></i>
+            </div>
+
+            <!-- Left accent on hover -->
+            <div
+              class="absolute left-0 top-0 bottom-0 w-0.5 bg-linear-to-b from-[#5b8def] to-[#a78bfa] scale-y-0 group-hover:scale-y-100 transition-transform duration-400 origin-top"
+            ></div>
+          </a>
+        }
       </div>
     </div>
 
     <!-- ====== RIGHT: Contact Form ====== -->
     <div
-      class="transition-all duration-700 delay-200 ease-out"
-      [ngClass]="{
-        'opacity-100 translate-y-0': isVisible(),
-        'opacity-0 translate-y-8': !isVisible()
-      }"
+      class="transition-all duration-700 delay-300 ease-out"
+      [class.opacity-100]="isVisible()"
+      [class.translate-y-0]="isVisible()"
+      [class.opacity-0]="!isVisible()"
+      [class.translate-y-10]="!isVisible()"
     >
-      <form
-        [formGroup]="contactForm"
-        (ngSubmit)="onSubmit()"
-        class="flex flex-col gap-5"
+      <!-- Form card wrapper -->
+      <div
+        class="bg-[rgba(14,20,40,0.45)] border border-[rgba(100,140,255,0.06)] rounded-3xl p-6 sm:p-8 md:p-9"
       >
-        <!-- Name + Email Row -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="flex flex-col gap-1.5">
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-6">
+          <!-- Name + Email Row -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="flex flex-col gap-2">
+              <label
+                for="name"
+                class="text-[0.72rem] font-bold text-[#515a6e] uppercase tracking-[1.5px] ml-1"
+              >
+                Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                formControlName="name"
+                placeholder="Your name"
+                class="w-full bg-[rgba(14,20,40,0.8)] border border-[rgba(100,140,255,0.08)] rounded-xl py-4 px-5 text-[#e8ecf4] text-[0.95rem] font-['Outfit',sans-serif] placeholder:text-[#3d4455] focus:outline-none focus:border-[#5b8def] focus:shadow-[0_0_0_3px_rgba(91,141,239,0.2)] hover:border-[rgba(100,140,255,0.15)] transition-all duration-300"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label
+                for="email"
+                class="text-[0.72rem] font-bold text-[#515a6e] uppercase tracking-[1.5px] ml-1"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="your&#64;email.com"
+                class="w-full bg-[rgba(14,20,40,0.8)] border border-[rgba(100,140,255,0.08)] rounded-xl py-4 px-5 text-[#e8ecf4] text-[0.95rem] font-['Outfit',sans-serif] placeholder:text-[#3d4455] focus:outline-none focus:border-[#5b8def] focus:shadow-[0_0_0_3px_rgba(91,141,239,0.2)] hover:border-[rgba(100,140,255,0.15)] transition-all duration-300"
+              />
+            </div>
+          </div>
+
+          <!-- Subject -->
+          <div class="flex flex-col gap-2">
             <label
-              for="name"
-              class="text-[0.65rem] font-bold text-[#515a6e] uppercase tracking-[1px] ml-1"
+              for="subject"
+              class="text-[0.72rem] font-bold text-[#515a6e] uppercase tracking-[1.5px] ml-1"
             >
-              Name
+              Subject
             </label>
             <input
-              id="name"
+              id="subject"
               type="text"
-              formControlName="name"
-              placeholder="Your name"
-              class="w-full bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)]
-                     rounded-xl py-3.5 px-4
-                     text-[#e8ecf4] text-[0.88rem] font-['Outfit',sans-serif]
-                     placeholder:text-[#515a6e]
-                     focus:outline-none focus:border-[#5b8def] focus:shadow-[0_0_0_3px_rgba(91,141,239,0.3)]
-                     transition-all duration-300"
+              formControlName="subject"
+              placeholder="What's this about?"
+              class="w-full bg-[rgba(14,20,40,0.8)] border border-[rgba(100,140,255,0.08)] rounded-xl py-4 px-5 text-[#e8ecf4] text-[0.95rem] font-['Outfit',sans-serif] placeholder:text-[#3d4455] focus:outline-none focus:border-[#5b8def] focus:shadow-[0_0_0_3px_rgba(91,141,239,0.2)] hover:border-[rgba(100,140,255,0.15)] transition-all duration-300"
             />
           </div>
-          <div class="flex flex-col gap-1.5">
+
+          <!-- Message -->
+          <div class="flex flex-col gap-2">
             <label
-              for="email"
-              class="text-[0.65rem] font-bold text-[#515a6e] uppercase tracking-[1px] ml-1"
+              for="message"
+              class="text-[0.72rem] font-bold text-[#515a6e] uppercase tracking-[1.5px] ml-1"
             >
-              Email
+              Message
             </label>
-            <input
-              id="email"
-              type="email"
-              formControlName="email"
-              placeholder="your&#64;email.com"
-              class="w-full bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)]
-                     rounded-xl py-3.5 px-4
-                     text-[#e8ecf4] text-[0.88rem] font-['Outfit',sans-serif]
-                     placeholder:text-[#515a6e]
-                     focus:outline-none focus:border-[#5b8def] focus:shadow-[0_0_0_3px_rgba(91,141,239,0.3)]
-                     transition-all duration-300"
-            />
+            <textarea
+              id="message"
+              formControlName="message"
+              placeholder="Tell me about your project..."
+              rows="6"
+              class="w-full bg-[rgba(14,20,40,0.8)] border border-[rgba(100,140,255,0.08)] rounded-xl py-4 px-5 text-[#e8ecf4] text-[0.95rem] font-['Outfit',sans-serif] placeholder:text-[#3d4455] resize-none focus:outline-none focus:border-[#5b8def] focus:shadow-[0_0_0_3px_rgba(91,141,239,0.2)] hover:border-[rgba(100,140,255,0.15)] transition-all duration-300"
+            ></textarea>
           </div>
-        </div>
 
-        <!-- Subject -->
-        <div class="flex flex-col gap-1.5">
-          <label
-            for="subject"
-            class="text-[0.65rem] font-bold text-[#515a6e] uppercase tracking-[1px] ml-1"
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            [disabled]="contactForm.invalid || isSending()"
+            class="group relative overflow-hidden self-start flex items-center gap-3 px-8 py-4 rounded-2xl text-[0.95rem] font-semibold tracking-[0.2px] text-white bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] shadow-[0_4px_24px_rgba(91,141,239,0.3)] hover:shadow-[0_8px_32px_rgba(91,141,239,0.45)] hover:-translate-y-0.5 active:scale-[0.97] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[0_4px_24px_rgba(91,141,239,0.3)] transition-all duration-300 cursor-pointer"
           >
-            Subject
-          </label>
-          <input
-            id="subject"
-            type="text"
-            formControlName="subject"
-            placeholder="What's this about?"
-            class="w-full bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)]
-                   rounded-xl py-3.5 px-4
-                   text-[#e8ecf4] text-[0.88rem] font-['Outfit',sans-serif]
-                   placeholder:text-[#515a6e]
-                   focus:outline-none focus:border-[#5b8def] focus:shadow-[0_0_0_3px_rgba(91,141,239,0.3)]
-                   transition-all duration-300"
-          />
-        </div>
+            <div
+              class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            ></div>
 
-        <!-- Message -->
-        <div class="flex flex-col gap-1.5">
-          <label
-            for="message"
-            class="text-[0.65rem] font-bold text-[#515a6e] uppercase tracking-[1px] ml-1"
-          >
-            Message
-          </label>
-          <textarea
-            id="message"
-            formControlName="message"
-            placeholder="Tell me about your project..."
-            rows="5"
-            class="w-full bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)]
-                   rounded-xl py-3.5 px-4
-                   text-[#e8ecf4] text-[0.88rem] font-['Outfit',sans-serif]
-                   placeholder:text-[#515a6e] resize-none
-                   focus:outline-none focus:border-[#5b8def] focus:shadow-[0_0_0_3px_rgba(91,141,239,0.3)]
-                   transition-all duration-300"
-          ></textarea>
-        </div>
+            <i
+              class="pi text-base relative z-10"
+              [ngClass]="{
+                'pi-spin pi-spinner': isSending(),
+                'pi-check-circle': isSent() && !isSending(),
+                'pi-send': !isSending() && !isSent(),
+              }"
+            ></i>
 
-        <!-- Submit Button -->
-        <button
-          type="submit"
-          [disabled]="contactForm.invalid || isSending()"
-          class="group relative overflow-hidden self-start
-                 flex items-center gap-2.5
-                 px-7 py-3.5 rounded-xl
-                 text-[0.88rem] font-semibold tracking-[0.2px] text-white
-                 bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]
-                 shadow-[0_4px_24px_rgba(91,141,239,0.3)]
-                 hover:shadow-[0_8px_32px_rgba(91,141,239,0.45)] hover:-translate-y-0.5
-                 active:scale-[0.97]
-                 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[0_4px_24px_rgba(91,141,239,0.3)]
-                 transition-all duration-300 cursor-pointer"
-        >
-          <!-- Hover shine -->
-          <div
-            class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          ></div>
+            <span class="relative z-10">
+              {{ isSending() ? 'Sending...' : isSent() ? 'Message Sent!' : 'Send Message' }}
+            </span>
+          </button>
 
-          <!-- Icon: spinner / check / send -->
-          <i
-            class="pi text-sm relative z-10"
-            [ngClass]="{
-              'pi-spin pi-spinner': isSending(),
-              'pi-check-circle': isSent() && !isSending(),
-              'pi-send': !isSending() && !isSent()
-            }"
-          ></i>
-
-          <span class="relative z-10">
-            {{ isSending() ? 'Sending...' : isSent() ? 'Message Sent!' : 'Send Message' }}
-          </span>
-        </button>
-
-        <!-- Success feedback -->
-        <div
-          *ngIf="isSent()"
-          class="flex items-center gap-2 px-4 py-3
-                 bg-[rgba(52,211,153,0.08)] border border-[rgba(52,211,153,0.15)]
-                 rounded-xl text-[#34d399] text-[0.82rem]
-                 animate-[fadeIn_0.3s_ease-out]"
-        >
-          <i class="pi pi-check-circle text-sm"></i>
-          Thanks for reaching out! I'll get back to you soon.
-        </div>
-      </form>
+          <!-- Success feedback -->
+          @if (isSent()) {
+            <div
+              class="flex items-center gap-3 px-5 py-4 bg-[rgba(52,211,153,0.08)] border border-[rgba(52,211,153,0.15)] rounded-2xl text-[#34d399] text-[0.88rem] animate-[fadeIn_0.3s_ease-out]"
+            >
+              <i class="pi pi-check-circle text-base"></i>
+              Thanks for reaching out! I'll get back to you soon.
+            </div>
+          }
+        </form>
+      </div>
     </div>
-
   </div>
 </section>
 
-<style>
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-</style>
+<!-- Footer -->
+<footer class="relative z-10 border-t border-[rgba(100,140,255,0.06)] text-center py-8 px-6">
+  <p class="text-[#515a6e] text-[0.82rem]">
+    Designed & built by
+    <a
+      (click)="scrollToTop()"
+      class="text-[#5b8def] hover:text-[#7ba8ff] cursor-pointer transition-colors duration-300"
+    >
+      Jayson Butawan
+    </a>
+    — &copy; 2026. All rights reserved.
+  </p>
+</footer>
