@@ -35,7 +35,7 @@
     ></div>
 
     <!-- Timeline Items -->
-    @for (exp of experiences; track i; let i = $index) {
+    @for (exp of experiences(); track exp.id; let i = $index) {
       <div
         #timelineItem
         class="timeline-item relative mb-12 md:mb-14 last:mb-0 opacity-0 translate-y-10 transition-all duration-800 ease-[cubic-bezier(0.16,1,0.3,1)]"
@@ -82,7 +82,11 @@
                 <line x1="8" y1="2" x2="8" y2="6" />
                 <line x1="3" y1="10" x2="21" y2="10" />
               </svg>
-              {{ exp.date }}
+              <app-inline-edit
+                [value]="exp.date"
+                [isAdmin]="auth.isAdmin()"
+                (saved)="updateField(exp.id, 'date', $event)"
+              />
             </span>
 
             <!-- Company badge -->
@@ -100,7 +104,11 @@
                   d="M3 21h18M3 7v1a3 3 0 006 0V7m0 1a3 3 0 006 0V7m0 1a3 3 0 006 0V7H3l2-4h14l2 4M5 21V10.7M19 21V10.7"
                 />
               </svg>
-              {{ exp.company }}
+              <app-inline-edit
+                [value]="exp.company"
+                [isAdmin]="auth.isAdmin()"
+                (saved)="updateField(exp.id, 'company', $event)"
+              />
             </span>
           </div>
 
@@ -108,14 +116,23 @@
           <h3
             class="relative text-lg sm:text-xl md:text-[1.35rem] font-bold text-[#e8ecf4] leading-snug mb-4 group-hover:text-white transition-colors duration-300"
           >
-            {{ exp.role }}
+            <app-inline-edit
+              [value]="exp.role"
+              [isAdmin]="auth.isAdmin()"
+              (saved)="updateField(exp.id, 'role', $event)"
+            />
           </h3>
 
           <!-- Description -->
           <p
             class="relative text-[0.9rem] md:text-[0.95rem] text-[#6b7280] leading-[1.85] mb-6 group-hover:text-[#8a94a8] transition-colors duration-300"
           >
-            {{ exp.description }}
+            <app-inline-edit
+              [value]="exp.description"
+              type="textarea"
+              [isAdmin]="auth.isAdmin()"
+              (saved)="updateField(exp.id, 'description', $event)"
+            />
           </p>
 
           <!-- Tech Tags -->
@@ -131,6 +148,15 @@
                 Core Development
               </span>
             }
+            @if (auth.isAdmin()) {
+              <app-inline-edit
+                [value]="techAsString(exp.tech)"
+                type="textarea"
+                [isAdmin]="true"
+                displayClass="font-['JetBrains_Mono',monospace] text-[0.7rem] text-[#34d399] opacity-50 hover:opacity-100"
+                (saved)="updateTech(exp.id, $event)"
+              />
+            }
           </div>
 
           <!-- Bottom accent line — grows on hover -->
@@ -138,6 +164,72 @@
             class="absolute bottom-0 left-8 right-8 h-px bg-linear-to-r from-transparent via-[rgba(91,141,239,0.15)] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center"
           ></div>
         </div>
+      </div>
+    } @empty {
+      <!-- Empty state placeholder card -->
+      <div class="timeline-item relative mb-12 md:mb-14 is-visible">
+        <!-- Timeline Dot -->
+        <div class="absolute -left-10 md:-left-14 lg:-left-16 top-8 flex items-center justify-center">
+          <div class="absolute w-7 h-7 rounded-full bg-[rgba(91,141,239,0.08)]"></div>
+          <div class="relative w-4.5 h-4.5 rounded-full bg-[#06080f] border-[2.5px] border-[rgba(91,141,239,0.3)] z-10"></div>
+        </div>
+
+        <!-- Card -->
+        <div class="relative bg-[rgba(14,20,40,0.5)] border border-dashed border-[rgba(100,140,255,0.15)] rounded-3xl p-7 sm:p-8 md:p-9 lg:p-10">
+          <!-- Top row placeholders -->
+          <div class="flex flex-wrap items-center gap-3 mb-5">
+            <span class="inline-flex items-center gap-2 font-['JetBrains_Mono',monospace] text-[0.75rem] text-[#5b8def]/40 tracking-[0.5px] px-3.5 py-1.5 rounded-lg bg-[rgba(91,141,239,0.04)] border border-[rgba(91,141,239,0.06)]">
+              <svg class="w-3.5 h-3.5 opacity-40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              Date range
+            </span>
+            <span class="inline-flex items-center gap-1.5 text-[0.75rem] font-medium text-[#515a6e] px-3 py-1.5 rounded-lg bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.04)]">
+              <svg class="w-3.5 h-3.5 opacity-30" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M3 21h18M3 7v1a3 3 0 006 0V7m0 1a3 3 0 006 0V7m0 1a3 3 0 006 0V7H3l2-4h14l2 4M5 21V10.7M19 21V10.7" />
+              </svg>
+              Company name
+            </span>
+          </div>
+          <div class="h-5 w-48 rounded-md bg-[rgba(255,255,255,0.04)] mb-4"></div>
+          <div class="space-y-2 mb-6">
+            <div class="h-3.5 w-full rounded bg-[rgba(255,255,255,0.03)]"></div>
+            <div class="h-3.5 w-5/6 rounded bg-[rgba(255,255,255,0.03)]"></div>
+            <div class="h-3.5 w-4/6 rounded bg-[rgba(255,255,255,0.03)]"></div>
+          </div>
+          <p class="text-[#515a6e] text-[0.8rem] flex items-center gap-2">
+            <i class="pi pi-info-circle text-sm"></i>
+            No experience entries yet.
+          </p>
+        </div>
+      </div>
+    }
+
+    <!-- Add Experience button — admin only -->
+    @if (auth.isAdmin()) {
+      <div class="relative mt-4 mb-12 md:mb-14">
+        <!-- Timeline Dot for add button -->
+        <div class="absolute -left-10 md:-left-14 lg:-left-16 top-4 flex items-center justify-center">
+          <div class="relative w-4.5 h-4.5 rounded-full bg-[#06080f] border-2 border-dashed border-[rgba(91,141,239,0.4)] z-10"></div>
+        </div>
+
+        <button
+          type="button"
+          (click)="addExperience()"
+          [disabled]="isAdding()"
+          class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl border border-dashed border-[rgba(91,141,239,0.25)] bg-[rgba(91,141,239,0.04)] text-[#5b8def] text-[0.8rem] font-medium hover:bg-[rgba(91,141,239,0.1)] hover:border-[rgba(91,141,239,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        >
+          @if (isAdding()) {
+            <i class="pi pi-spin pi-spinner text-sm"></i>
+            Creating…
+          } @else {
+            <i class="pi pi-plus text-sm"></i>
+            Add Experience
+          }
+        </button>
       </div>
     }
   </div>
