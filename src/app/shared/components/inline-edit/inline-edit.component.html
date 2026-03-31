@@ -1,0 +1,111 @@
+<span class="group/field relative inline-block overflow-visible" [class.w-full]="type === 'textarea'">
+  @if (!isEditing()) {
+    <span [class]="displayClass">{{ value }}</span>
+
+    @if (isAdmin) {
+      <button
+        type="button"
+        title="Edit"
+        (click)="startEdit($event)"
+        class="absolute -right-8 top-1/2 -translate-y-1/2 z-10
+               inline-flex items-center justify-center w-7 h-7
+               rounded-lg cursor-pointer
+               bg-[#0e1221] hover:bg-[#5b8def]
+               text-[#5b8def] hover:text-white
+               border border-[rgba(91,141,239,0.3)] hover:border-[#5b8def]
+               shadow-[0_2px_10px_rgba(0,0,0,0.4)]
+               opacity-60 group-hover/field:opacity-100
+               hover:shadow-[0_0_16px_rgba(91,141,239,0.35)]
+               hover:scale-110
+               transition-all duration-200"
+      >
+        <!-- Pencil icon (SVG) -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+          <path d="m15 5 4 4"/>
+        </svg>
+      </button>
+    }
+  } @else {
+    <span class="flex flex-col gap-1.5" [class.w-full]="type === 'textarea'">
+      @if (type === 'textarea') {
+        <textarea
+          #inputEl
+          [(ngModel)]="editValue"
+          rows="3"
+          aria-label="Edit field"
+          placeholder="Enter text..."
+          class="w-full resize-none rounded-lg px-3 py-2
+                 font-[inherit]
+                 bg-[rgba(91,141,239,0.06)]
+                 border border-[rgba(91,141,239,0.35)]
+                 text-[#e8ecf4] outline-none
+                 focus:border-[#5b8def]
+                 focus:shadow-[0_0_0_3px_rgba(91,141,239,0.18)]
+                 transition-all duration-200"
+          (keydown.escape)="cancel()"
+        ></textarea>
+      } @else {
+        <input
+          #inputEl
+          type="text"
+          [(ngModel)]="editValue"
+          [size]="(editValue || '').length || (value || '').length || 10"
+          aria-label="Edit field"
+          placeholder="Enter text..."
+          class="rounded-lg px-2 py-0.5
+                 font-[inherit]
+                 bg-[rgba(91,141,239,0.06)]
+                 border border-[rgba(91,141,239,0.35)]
+                 text-[#e8ecf4] outline-none
+                 focus:border-[#5b8def]
+                 focus:shadow-[0_0_0_3px_rgba(91,141,239,0.18)]
+                 transition-all duration-200"
+          (keydown.enter)="save()"
+          (keydown.escape)="cancel()"
+        />
+      }
+
+      <span class="flex gap-1.5">
+        <button
+          type="button"
+          title="Save"
+          (click)="save()"
+          class="inline-flex items-center justify-center w-7 h-7
+                 rounded-lg cursor-pointer
+                 bg-[#34d399] hover:bg-[#2cc088]
+                 text-[#071a0e] font-bold
+                 transition-colors duration-150"
+        >
+          <!-- Check icon (SVG) -->
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="3"
+               stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </button>
+        <button
+          type="button"
+          title="Cancel"
+          (click)="cancel()"
+          class="inline-flex items-center justify-center w-7 h-7
+                 rounded-lg cursor-pointer
+                 bg-[rgba(248,113,113,0.15)] hover:bg-[rgba(248,113,113,0.3)]
+                 text-[#f87171]
+                 border border-[rgba(248,113,113,0.25)]
+                 transition-colors duration-150"
+        >
+          <!-- X icon (SVG) -->
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="3"
+               stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </span>
+    </span>
+  }
+</span>

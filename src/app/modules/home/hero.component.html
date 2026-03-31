@@ -1,36 +1,57 @@
 <section
   id="hero"
-  class="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center p-6 md:p-8 font-['Outfit',sans-serif] text-[#e8ecf4]"
+  class="relative min-h-screen w-full overflow-x-clip flex flex-col items-center justify-center p-6 md:p-8 font-['Outfit',sans-serif] text-[#e8ecf4]"
 >
   <div
     class="w-full -mt-20 md:-mt-28 lg:px-20 xl:px-45 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center z-10 grow"
   >
     <div class="space-y-7">
+
+      <!-- Status badge -->
       <div
-        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.15)] text-3xl font-medium text-[#7ba8ff] uppercase tracking-widest"
+        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full overflow-visible bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.15)] text-3xl font-medium text-[#7ba8ff] uppercase tracking-widest"
       >
         <span class="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-pulse"></span>
-        Available for opportunities
+        <app-inline-edit
+          [value]="hero().statusBadge"
+          [isAdmin]="auth.isAdmin()"
+          (saved)="updateField('statusBadge', $event)"
+        />
       </div>
 
       <div class="space-y-3">
+        <!-- Name -->
         <h1
-          class="text-5xl sm:text-7xl lg:text-7xl font-extrabold tracking-[-3px] leading-tight whitespace-nowrap"
+          class="text-5xl sm:text-7xl lg:text-7xl font-extrabold tracking-[-3px] leading-tight"
         >
-          Jayson <span class="text-[#c8cdd8]">Butawan</span>
+          <app-inline-edit
+            [value]="hero().name"
+            [isAdmin]="auth.isAdmin()"
+            (saved)="updateField('name', $event)"
+          />
+          <span> </span>
         </h1>
+
+        <!-- Role -->
         <h2 class="text-xl md:text-2xl font-light text-[#8a94a8] tracking-[-0.3px]">
           Creative
-          <span
-            class="font-semibold text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
-            >Full-Stack Developer</span
-          >
+          <app-inline-edit
+            [value]="hero().role"
+            [isAdmin]="auth.isAdmin()"
+            displayClass="font-semibold text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
+            (saved)="updateField('role', $event)"
+          />
         </h2>
       </div>
 
+      <!-- Summary -->
       <p class="text-[#8a94a8] text-[0.95rem] leading-[1.8] max-w-120">
-        I architect and build performant web applications with clean code, modern frameworks, and a
-        deep focus on user experience.
+        <app-inline-edit
+          [value]="hero().summary"
+          type="textarea"
+          [isAdmin]="auth.isAdmin()"
+          (saved)="updateField('summary', $event)"
+        />
       </p>
 
       <div class="flex flex-wrap items-center gap-4 pt-2">
@@ -42,6 +63,7 @@
           <span>Download CV</span>
         </button>
         <button
+          type="button"
           class="bg-transparent border border-[rgba(100,160,255,0.2)] text-[#e8ecf4] font-semibold text-[0.95rem] py-3.5 px-7 rounded-xl flex items-center gap-2.5 hover:bg-[rgba(91,141,239,0.06)] transition-all cursor-pointer"
         >
           <i class="pi pi-envelope text-sm"></i>
@@ -50,9 +72,8 @@
       </div>
     </div>
 
-  <app-hero-orb/>
+    <app-hero-orb />
   </div>
 
-<!-- In your hero template, replace the stats section with: -->
-<app-tech-stack-bar />
+  <app-tech-stack-bar />
 </section>

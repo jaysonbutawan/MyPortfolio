@@ -4,10 +4,15 @@ export interface UserData {
   email: string;
 }
 
-export interface LoginResponse {
-  message: string;
+export interface LoginTokenPayload {
   token: string;
   user: UserData;
+}
+
+export interface LoginResponse {
+  message: string;
+  token: LoginTokenPayload;
+  user: null;
 }
 
 export interface RegisterResponse {

@@ -16,11 +16,14 @@ export class LoginService {
       .post<LoginResponse>(`${this.API_URL}/login`, credentials)
       .pipe(
         tap((response) => {
-          // Laravel returns { message, token, user }
-          // — no "success" field, so check for token directly
-          if (response.token) {
-            localStorage.setItem('access_token', response.token);
-            localStorage.setItem('user_data', JSON.stringify(response.user));
+          console.log('--- Login Response ---', response); // Log the full object
+
+          if (response.token?.token) {
+            console.log('✅ Login successful. Token received.');
+            localStorage.setItem('access_token', response.token.token);
+            localStorage.setItem('user_data', JSON.stringify(response.token.user));
+          } else {
+            console.warn('⚠️ Login response did not contain a token.');
           }
         })
       );
@@ -28,7 +31,7 @@ export class LoginService {
 
   logout(): Observable<LogoutResponse> {
     const token = localStorage.getItem('access_token');
-    // Call backend to revoke the Sanctum token
+
     return this.http
       .post<LogoutResponse>(
         `${this.API_URL}/logout`,
@@ -36,20 +39,28 @@ export class LoginService {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .pipe(
-        tap(() => {
+        tap((response) => {
+          console.log('--- Logout Response ---', response);
+          console.log('🧹 Clearing local session...');
+
           localStorage.removeItem('access_token');
           localStorage.removeItem('user_data');
+
+          console.log('✨ Session cleared successfully.');
         })
       );
   }
 
   clearLocalSession(): void {
+    console.log('🛑 Force clearing local storage...');
     localStorage.removeItem('access_token');
     localStorage.removeItem('user_data');
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('access_token');
+    const status = !!localStorage.getItem('access_token');
+    // console.log(`🔐 Auth Check: User is ${status ? 'Logged In' : 'Logged Out'}`);
+    return status;
   }
 
   getToken(): string | null {

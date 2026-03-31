@@ -2,11 +2,9 @@ import { Injectable, signal } from '@angular/core';
 
 export interface HeroData {
   name: string;
-  lastName: string;
   role: string;
   summary: string;
   statusBadge: string;
-  cvUrl: string;
 }
 
 export interface AboutData {
@@ -108,13 +106,11 @@ export class PortfolioService {
   private getDefaultData(): PortfolioData {
     return {
       hero: {
-        name: 'Jayson',
-        lastName: 'Butawan',
+        name: 'Jayson Butawan',
         role: 'Full-Stack Developer',
         summary:
           'I architect and build performant web applications with clean code, modern frameworks, and a deep focus on user experience.',
         statusBadge: 'Available for opportunities',
-        cvUrl: '#',
       },
       about: {
         paragraphs: [
