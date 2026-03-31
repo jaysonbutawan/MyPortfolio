@@ -4,16 +4,29 @@
     <p
       class="font-['JetBrains_Mono',monospace] text-5xl text-[#5b8def] tracking-[3px] uppercase opacity-80 mb-4"
     >
-      // About Me
+      //&#32;<app-inline-edit
+        [value]="about().section_label"
+        [isAdmin]="auth.isAdmin()"
+        (saved)="updateField('section_label', $event)"
+      />
     </p>
     <h2
       class="text-3xl sm:text-4xl md:text-[2.8rem] font-bold tracking-[-1.5px] leading-[1.1] text-[#e8ecf4]"
     >
-      Crafting the
+      <app-inline-edit
+        [value]="about().heading_main"
+        [isAdmin]="auth.isAdmin()"
+        (saved)="updateField('heading_main', $event)"
+      />
       <span
         class="italic text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
       >
-        digital future
+        <app-inline-edit
+          [value]="about().heading_highlight"
+          [isAdmin]="auth.isAdmin()"
+          displayClass="italic text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
+          (saved)="updateField('heading_highlight', $event)"
+        />
       </span>
     </h2>
     <!-- Decorative line under heading -->
@@ -28,22 +41,26 @@
     <!-- Left: About Text -->
     <div #aboutText class="about-reveal about-reveal--text space-y-6">
       <p class="text-[#8a94a8] text-[0.95rem] sm:text-base leading-[1.9] tracking-[0.2px]">
-        I am an aspiring full-stack developer eager to learn, grow, and build impactful web
-        applications. I have a solid foundation in programming logic and a basic understanding of
-        modern technologies such as Angular, Laravel, and JavaScript, which I continuously improve
-        through hands-on practice.
+        <app-inline-edit
+          [value]="about().description_top"
+          type="textarea"
+          [isAdmin]="auth.isAdmin()"
+          (saved)="updateField('description_top', $event)"
+        />
       </p>
       <p class="text-[#8a94a8] text-[0.95rem] sm:text-base leading-[1.9] tracking-[0.2px]">
-        I am passionate about developing scalable and efficient software, and I enjoy exploring how
-        systems are designed from front-end interfaces to back-end architectures. With a strong
-        willingness to learn and adapt, I aim to contribute to real-world projects while
-        continuously enhancing my technical and problem-solving skills.
+        <app-inline-edit
+          [value]="about().description_bottom"
+          type="textarea"
+          [isAdmin]="auth.isAdmin()"
+          (saved)="updateField('description_bottom', $event)"
+        />
       </p>
     </div>
 
     <!-- Right: Detail Cards -->
     <div class="flex flex-col gap-4 sm:gap-5">
-      @for (detail of details; track detail.label; let i = $index) {
+      @for (detail of details(); track detail.id; let i = $index) {
         <div
           #detailCard
           class="about-reveal group relative flex items-center gap-5 sm:gap-6 px-6 sm:px-8 py-5 sm:py-7 bg-[rgba(14,20,40,0.5)] border border-[rgba(100,140,255,0.08)] rounded-2xl sm:rounded-3xl overflow-hidden hover:bg-[rgba(20,30,60,0.7)] hover:border-[rgba(100,160,255,0.2)] hover:translate-x-2 hover:shadow-[0_8px_40px_rgba(0,0,0,0.25)] transition-all duration-500 ease-out cursor-default"
@@ -72,12 +89,20 @@
             <p
               class="text-[0.68rem] sm:text-[0.72rem] font-bold text-[#515a6e] uppercase tracking-[2px] leading-none mb-2 group-hover:text-[#8a94a8] transition-colors duration-300"
             >
-              {{ detail.label }}
+              <app-inline-edit
+                [value]="detail.label"
+                [isAdmin]="auth.isAdmin()"
+                (saved)="updateCard(detail.id, 'label', $event)"
+              />
             </p>
             <p
               class="text-[0.95rem] sm:text-[1.05rem] font-semibold text-[#e8ecf4] truncate leading-snug group-hover:text-white transition-colors duration-300"
             >
-              {{ detail.value }}
+              <app-inline-edit
+                [value]="detail.value"
+                [isAdmin]="auth.isAdmin()"
+                (saved)="updateCard(detail.id, 'value', $event)"
+              />
             </p>
           </div>
 
