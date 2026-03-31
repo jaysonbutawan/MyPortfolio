@@ -6,6 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-admin-login',
@@ -22,7 +23,10 @@ export class LoginComponent {
 
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -45,31 +49,24 @@ export class LoginComponent {
     this.showPassword.update((v) => !v);
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.loginForm.invalid) return;
 
     this.isLoading.set(true);
     this.errorMessage.set('');
 
-    // Replace with your actual AuthService call
-    // this.authService.login(this.loginForm.value).subscribe(...)
-    setTimeout(() => {
-      this.isLoading.set(false);
+    const { email, password } = this.loginForm.value;
+    const success = await this.authService.login(email, password);
 
-      // Example: check credentials
-      const { email, password } = this.loginForm.value;
-      if (email === 'admin@portfolio.dev' && password === 'admin123') {
-        this.close();
-        // Navigate to admin/edit page
-        // this.router.navigate(['/admin']);
-        console.log('Login successful — redirect to admin panel');
-      } else {
-        this.errorMessage.set('Invalid email or password. Please try again.');
-      }
-    }, 1500);
+    this.isLoading.set(false);
+
+    if (success) {
+      this.close();
+    } else {
+      this.errorMessage.set('Invalid email or password. Please try again.');
+    }
   }
 
-  /** Close modal when clicking the backdrop */
   onBackdropClick(event: MouseEvent): void {
     if ((event.target as HTMLElement).classList.contains('modal-backdrop')) {
       this.close();
