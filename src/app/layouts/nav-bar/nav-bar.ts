@@ -5,9 +5,12 @@ import {
   OnDestroy,
   signal,
   computed,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { LoginComponent } from '../../modules/auth/login.component';
+
 
 interface NavLink {
   label: string;
@@ -24,7 +27,7 @@ interface SocialLink {
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule,LoginComponent],
   templateUrl: './nav-bar.html',
 })
 export class NavbarComponent implements OnInit, OnDestroy {
@@ -42,12 +45,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { label: 'Contact', fragment: 'contact', icon: 'pi pi-envelope' },
   ];
 
-  socialLinks: SocialLink[] = [
-    { label: 'GitHub', icon: 'pi pi-github', href: 'https://github.com/johndoe' },
-    { label: 'LinkedIn', icon: 'pi pi-linkedin', href: 'https://linkedin.com/in/johndoe' },
-    { label: 'Email', icon: 'pi pi-envelope', href: 'mailto:john@doe.dev' },
-  ];
-
   navClasses = computed(() => {
     const base =
       'fixed top-0 left-0 right-0 z-50 transition-all duration-400 ease-out border-b';
@@ -62,6 +59,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setupSectionObserver();
   }
+
+  @ViewChild(LoginComponent) adminLogin!: LoginComponent;
+
+openAdminLogin(): void {
+  this.adminLogin.open();
+}
+
 
   ngOnDestroy(): void {
     this.observer?.disconnect();

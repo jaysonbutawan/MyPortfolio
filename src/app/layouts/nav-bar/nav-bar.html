@@ -1,20 +1,24 @@
 <nav [class]="navClasses()">
   <div class="max-w-350mx-auto px-6 md:px-10 h-20 flex items-center justify-between">
     <!-- ====== LOGO (far left) ====== -->
-    <a
-      (click)="scrollTo('hero')"
+     <a
+      (click)="openAdminLogin()"
       role="button"
       tabindex="0"
-      (keydown.enter)="scrollTo('hero')"
+      (keydown.enter)="openAdminLogin()"
       class="flex items-center gap-1.5 cursor-pointer select-none group mr-auto"
+      title="Admin access"
     >
       <span
-        class="font-extrabold text-2xl tracking-[-0.5px] bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] bg-clip-text text-transparent"
+        class="font-extrabold text-2xl tracking-[-0.5px]
+               bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]
+               bg-clip-text text-transparent"
       >
         JDB
       </span>
       <span
-        class="font-mono font-medium text-base text-[#515a6e] group-hover:text-[#8a94a8] transition-colors duration-300"
+        class="font-mono font-medium text-base text-[#515a6e]
+               group-hover:text-[#8a94a8] transition-colors duration-300"
       >
         .dev
       </span>
@@ -166,21 +170,8 @@
         <i class="pi pi-send text-sm"></i>
         Let's Talk
       </button>
-
-      <!-- Social Links -->
-      <div class="flex items-center justify-center gap-3 mt-5">
-        @for (social of socialLinks; track social.label) {
-          <a
-            [href]="social.href"
-            target="_blank"
-            rel="noopener noreferrer"
-            [attr.aria-label]="social.label"
-            class="w-11 h-11 rounded-xl bg-[rgba(91,141,239,0.06)] border border-[rgba(100,140,255,0.08)] flex items-center justify-center text-[#515a6e] hover:text-[#5b8def] hover:bg-[rgba(91,141,239,0.1)] hover:border-[rgba(91,141,239,0.2)] active:scale-95 transition-all duration-300"
-          >
-            <i [class]="social.icon" class="text-base"></i>
-          </a>
-        }
-      </div>
     </div>
   </div>
 </nav>
+
+ <app-admin-login />

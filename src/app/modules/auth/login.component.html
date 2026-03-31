@@ -1,0 +1,144 @@
+@if (isOpen()) {
+  <div
+    class="modal-backdrop fixed inset-0 z-200 flex items-center justify-center bg-[#06080f]/70 backdrop-blur-sm p-4 animate-[fadeIn_0.2s_ease-out]"
+    (click)="onBackdropClick($event)"
+  >
+    <!-- Modal Card -->
+    <div
+      class="relative w-full max-w-md bg-[#0e1221] border border-[rgba(100,140,255,0.08)] rounded-3xl shadow-[0_24px_80px_rgba(0,0,0,0.6)] overflow-hidden animate-[modalIn_0.3s_ease-out]"
+    >
+      <!-- Gradient accent top bar -->
+      <div class="h-0.75 w-full bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"></div>
+
+      <!-- Header -->
+      <div class="px-8 pt-8 pb-0">
+        <div class="flex items-center justify-between">
+          <div>
+            <!-- Logo -->
+            <div class="flex items-center gap-1.5 mb-3">
+              <span
+                class="font-extrabold text-xl tracking-[-0.5px] bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] bg-clip-text text-transparent"
+              >
+                JDB
+              </span>
+              <span class="font-mono font-medium text-sm text-[#515a6e]">.dev</span>
+            </div>
+            <h2 class="text-xl font-bold text-[#e8ecf4] tracking-tight">Admin Access</h2>
+            <p class="text-[#515a6e] text-[0.82rem] mt-1">Sign in to customize your portfolio</p>
+          </div>
+
+          <!-- Close button -->
+          <button
+            (click)="close()"
+            type="button"
+            aria-label="Close login"
+            class="w-9 h-9 rounded-xl flex items-center justify-center text-[#515a6e] hover:text-white hover:bg-[rgba(91,141,239,0.08)] transition-all duration-200 cursor-pointer self-start"
+          >
+            <i class="pi pi-times text-base"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="px-8 pt-6 pb-8 space-y-5">
+        <!-- Error Message -->
+        @if (errorMessage()) {
+          <div
+            class="flex items-center gap-2.5 px-4 py-3 bg-[rgba(239,68,68,0.08)] border border-[rgba(239,68,68,0.15)] rounded-xl text-red-400 text-[0.82rem] animate-[fadeIn_0.2s_ease-out]"
+          >
+            <i class="pi pi-exclamation-circle text-sm shrink-0"></i>
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <!-- Email -->
+        <div class="flex flex-col gap-2">
+          <label
+            for="login-email"
+            class="text-[0.68rem] font-bold text-[#515a6e] uppercase tracking-[1.5px] ml-1"
+          >
+            Email Address
+          </label>
+          <div class="relative">
+            <i
+              class="pi pi-envelope absolute left-4 top-1/2 -translate-y-1/2 text-[#3d4455] text-sm pointer-events-none"
+            ></i>
+            <input
+              id="login-email"
+              type="email"
+              formControlName="email"
+              placeholder="admin&#64;portfolio.dev"
+              class="w-full bg-[rgba(14,20,40,0.8)] border border-[rgba(100,140,255,0.08)] rounded-xl py-3.5 pl-11 pr-4 text-[#e8ecf4] text-[0.92rem] font-['Outfit',sans-serif] placeholder:text-[#3d4455] focus:outline-none focus:border-[#5b8def] focus:shadow-[0_0_0_3px_rgba(91,141,239,0.2)] hover:border-[rgba(100,140,255,0.15)] transition-all duration-300"
+              autocomplete="email"
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="flex flex-col gap-2">
+          <label
+            for="login-password"
+            class="text-[0.68rem] font-bold text-[#515a6e] uppercase tracking-[1.5px] ml-1"
+          >
+            Password
+          </label>
+          <div class="relative">
+            <i
+              class="pi pi-lock absolute left-4 top-1/2 -translate-y-1/2 text-[#3d4455] text-sm pointer-events-none"
+            ></i>
+            <input
+              id="login-password"
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Enter your password"
+              class="w-full bg-[rgba(14,20,40,0.8)] border border-[rgba(100,140,255,0.08)] rounded-xl py-3.5 pl-11 pr-12 text-[#e8ecf4] text-[0.92rem] font-['Outfit',sans-serif] placeholder:text-[#3d4455] focus:outline-none focus:border-[#5b8def] focus:shadow-[0_0_0_3px_rgba(91,141,239,0.2)] hover:border-[rgba(100,140,255,0.15)] transition-all duration-300"
+              autocomplete="current-password"
+            />
+            <!-- Toggle visibility -->
+            <button
+              aria-label="Toggle password visibility"
+              type="button"
+              (click)="togglePassword()"
+              class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center text-[#515a6e] hover:text-[#8a94a8] hover:bg-[rgba(91,141,239,0.06)] transition-all duration-200 cursor-pointer"
+            >
+              <i
+                class="pi text-sm"
+                [ngClass]="{
+                  'pi-eye': !showPassword(),
+                  'pi-eye-slash': showPassword(),
+                }"
+              ></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid || isLoading()"
+          class="group relative overflow-hidden w-full flex items-center justify-center gap-2.5 py-4 rounded-xl text-[0.92rem] font-semibold tracking-[0.2px] text-white bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] shadow-[0_4px_24px_rgba(91,141,239,0.3)] hover:shadow-[0_8px_32px_rgba(91,141,239,0.45)] hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[0_4px_24px_rgba(91,141,239,0.3)] transition-all duration-300 cursor-pointer"
+        >
+          <div
+            class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></div>
+
+          <i
+            class="pi text-sm relative z-10"
+            [ngClass]="{
+              'pi-spin pi-spinner': isLoading(),
+              'pi-sign-in': !isLoading(),
+            }"
+          ></i>
+          <span class="relative z-10">
+            {{ isLoading() ? 'Signing in...' : 'Sign In' }}
+          </span>
+        </button>
+
+        <!-- Hint -->
+        <p class="text-center text-[0.72rem] text-[#3d4455] pt-1">
+          Only the portfolio owner can access this panel.
+        </p>
+      </form>
+    </div>
+  </div>
+}
