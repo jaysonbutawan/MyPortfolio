@@ -71,6 +71,22 @@ export class AboutService {
   );
 }
 
+deleteCard(id: number): Observable<void> {
+  return this.http.delete<void>(`${this.CARDS_URL}/${id}`).pipe(
+    tap({
+      error: (err) => console.error('[AboutService] DELETE card failed:', err.status, err.error),
+    })
+  );
+}
+
+storeCard(data: { label: string; value: string }): Observable<AboutDetailsCardApiResponse> {
+  return this.http.post<AboutDetailsCardApiResponse>(this.CARDS_URL, data).pipe(
+    tap({
+      error: (err) => console.error('[AboutService] POST card failed:', err.status, err.error),
+    })
+  );
+}
+
 updateCard(id: number, data: { label: string; value: string }): Observable<AboutDetailsCardApiResponse> {
   const url = `${this.CARDS_URL}/${id}`;
   console.log('[AboutService] PUT card →', url, 'Payload:', data);

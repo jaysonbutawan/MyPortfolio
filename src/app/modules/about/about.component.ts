@@ -57,6 +57,8 @@ export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
   });
 
   details = signal<AboutDetail[]>([]);
+  isAdding = signal(false);
+  deletingId = signal<number | null>(null);
 
   ngOnInit(): void {
     this.aboutService.getAbout().subscribe({
@@ -109,6 +111,47 @@ export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       },
       error: (err) => console.error('Failed to save about:', err),
+    });
+  }
+
+  deleteCard(id: number): void {
+    if (this.deletingId() !== null) return;
+    this.deletingId.set(id);
+
+    this.aboutService.deleteCard(id).subscribe({
+      next: () => {
+        this.details.update((cards) => cards.filter((c) => c.id !== id));
+        this.deletingId.set(null);
+      },
+      error: (err) => {
+        console.error('Failed to delete card:', err);
+        this.deletingId.set(null);
+      },
+    });
+  }
+
+  addCard(): void {
+    if (this.isAdding()) return;
+    this.isAdding.set(true);
+
+    this.aboutService.storeCard({ label: 'Label', value: 'Value' }).subscribe({
+      next: (res) => {
+        const i = this.details().length;
+        this.details.update((cards) => [
+          ...cards,
+          {
+            id: res.id,
+            label: res.label,
+            value: res.value,
+            ...CARD_VISUAL_CONFIG[i % CARD_VISUAL_CONFIG.length],
+          },
+        ]);
+        this.isAdding.set(false);
+      },
+      error: (err) => {
+        console.error('Failed to create card:', err);
+        this.isAdding.set(false);
+      },
     });
   }
 
