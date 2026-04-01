@@ -6,10 +6,12 @@ import {
   signal,
   computed,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from '../../modules/auth/login.component';
+import { AuthService } from '../../core/services/auth.service';
 
 
 interface NavLink {
@@ -31,6 +33,8 @@ interface SocialLink {
   templateUrl: './nav-bar.html',
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  auth = inject(AuthService);
+
   isScrolled = signal(false);
   isMobileMenuOpen = signal(false);
   activeSection = signal('hero');
@@ -62,8 +66,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   @ViewChild(LoginComponent) adminLogin!: LoginComponent;
 
-openAdminLogin(): void {
-  this.adminLogin.open();
+toggleAdmin(): void {
+  if (this.auth.isAdmin()) {
+    this.auth.logout();
+  } else {
+    this.adminLogin.open();
+  }
 }
 
 

@@ -23,10 +23,10 @@
       >
         <!-- Fade edges — narrower on mobile -->
         <div
-          class="absolute left-0 top-0 bottom-0 w-8 sm:w-16 z-10 pointer-events-none bg-gradient-to-r from-[#06080f] to-transparent"
+          class="absolute left-0 top-0 bottom-0 w-8 sm:w-16 z-10 pointer-events-none bg-linear-to-r from-[#06080f] to-transparent"
         ></div>
         <div
-          class="absolute right-0 top-0 bottom-0 w-8 sm:w-16 z-10 pointer-events-none bg-gradient-to-l from-[#06080f] to-transparent"
+          class="absolute right-0 top-0 bottom-0 w-8 sm:w-16 z-10 pointer-events-none bg-linear-to-l from-[#06080f] to-transparent"
         ></div>
 
         <!-- Scrolling track -->
@@ -34,7 +34,7 @@
           <!-- First set -->
           @for (icon of techIcons(); track icon.name) {
             <div
-              class="group/icon flex-shrink-0 relative w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-[rgba(14,20,40,0.6)] border border-[rgba(100,140,255,0.06)] flex items-center justify-center hover:bg-[rgba(20,30,60,0.8)] hover:border-[rgba(100,160,255,0.2)] hover:shadow-[0_0_20px_rgba(91,141,239,0.1)] hover:scale-110 transition-all duration-300 cursor-default"
+              class="group/icon shrink-0 relative w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-[rgba(14,20,40,0.6)] border border-[rgba(100,140,255,0.06)] flex items-center justify-center hover:bg-[rgba(20,30,60,0.8)] hover:border-[rgba(100,160,255,0.2)] hover:shadow-[0_0_20px_rgba(91,141,239,0.1)] hover:scale-110 transition-all duration-300 cursor-default"
             >
               <i
                 [class]="icon.iconClass"

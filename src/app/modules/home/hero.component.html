@@ -6,7 +6,6 @@
     class="w-full -mt-20 md:-mt-28 lg:px-20 xl:px-45 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center z-10 grow"
   >
     <div class="space-y-7">
-
       <!-- Status badge -->
       <div
         class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full overflow-visible bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.15)] text-3xl font-medium text-[#7ba8ff] uppercase tracking-widest"
@@ -19,40 +18,38 @@
         />
       </div>
 
-      <div class="space-y-3">
-        <!-- Name -->
-        <h1
-          class="text-5xl sm:text-7xl lg:text-7xl font-extrabold tracking-[-3px] leading-tight"
-        >
-          <app-inline-edit
-            [value]="hero().name"
-            [isAdmin]="auth.isAdmin()"
-            (saved)="updateField('name', $event)"
-          />
-          <span> </span>
-        </h1>
+      <div class="space-y-3 lg:max-w-[90%]"> <h1 class="text-5xl sm:text-7xl lg:text-7xl font-extrabold tracking-[-3px] leading-[1.1] break-words">
+    <app-inline-edit
+      [value]="hero().name"
+      [isAdmin]="auth.isAdmin()"
+      (saved)="updateField('name', $event)"
+    />
+  </h1>
 
-        <!-- Role -->
-        <h2 class="text-xl md:text-2xl font-light text-[#8a94a8] tracking-[-0.3px]">
-          Creative
-          <app-inline-edit
-            [value]="hero().role"
-            [isAdmin]="auth.isAdmin()"
-            displayClass="font-semibold text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
-            (saved)="updateField('role', $event)"
-          />
-        </h2>
-      </div>
+  <h2 class="text-xl md:text-2xl font-light text-[#8a94a8] tracking-[-0.3px] leading-relaxed break-words">
+    Creative
+    <app-inline-edit
+      [value]="hero().role"
+      [isAdmin]="auth.isAdmin()"
+      displayClass="font-semibold text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
+      (saved)="updateField('role', $event)"
+    />
+  </h2>
+</div>
 
       <!-- Summary -->
-      <p class="text-[#8a94a8] text-[0.95rem] leading-[1.8] max-w-120">
-        <app-inline-edit
-          [value]="hero().summary"
-          type="textarea"
-          [isAdmin]="auth.isAdmin()"
-          (saved)="updateField('summary', $event)"
-        />
-      </p>
+     <div class="flex flex-col w-full">
+  <p
+    class="text-[#8a94a8] text-[0.95rem] leading-[1.8] lg:max-w-[85%] w-full block whitespace-pre-wrap break-words"
+  >
+    <app-inline-edit
+      [value]="hero().summary"
+      type="textarea"
+      [isAdmin]="auth.isAdmin()"
+      (saved)="updateField('summary', $event)"
+    />
+  </p>
+</div>
 
       <div class="flex flex-wrap items-center gap-4 pt-2">
         <button

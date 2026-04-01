@@ -27,13 +27,37 @@
 
   <!-- Project Cards Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-    @for (project of projects; track project.title; let i = $index) {
+    @for (project of projects(); track project.id; let i = $index) {
       <div
         #projectCard
         class="project-card group relative bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)] rounded-3xl overflow-hidden opacity-0 translate-y-10 hover:border-[rgba(100,160,255,0.2)] hover:shadow-[0_24px_60px_rgba(0,0,0,0.4)] transition-all duration-500 ease-in-out cursor-default"
         [style.transitionDelay]="i * 130 + 'ms'"
       >
-        <!-- Banner — taller for more visual impact -->
+        <!-- Delete button — admin only, top-right of card -->
+        @if (auth.isAdmin()) {
+          <button
+            type="button"
+            title="Delete project"
+            (click)="deleteProject(project.id)"
+            [disabled]="deletingId() !== null"
+            class="absolute top-4 right-4 z-20 inline-flex items-center justify-center w-8 h-8 rounded-xl bg-black/40 backdrop-blur-sm hover:bg-[rgba(239,68,68,0.25)] border border-white/10 hover:border-[rgba(239,68,68,0.4)] text-white/50 hover:text-[#f87171] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+          >
+            @if (deletingId() === project.id) {
+              <svg class="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+            } @else {
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6M14 11v6"/>
+                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+            }
+          </button>
+        }
+
+        <!-- Banner -->
         <div class="relative h-48 sm:h-52 md:h-48 lg:h-56 overflow-hidden">
           <!-- Gradient Background -->
           <div
@@ -42,56 +66,106 @@
           ></div>
 
           <!-- Dot grid pattern -->
-          <div
-            class="absolute inset-0 opacity-[0.04]"
-            style="
-              background-image: radial-gradient(circle, #ffffff 1px, transparent 1px);
-              background-size: 24px 24px;
-            "
-          ></div>
+          <div class="absolute inset-0 opacity-[0.04] dot-grid"></div>
 
-          <!-- Icon — larger, more animated -->
-          <div
-            class="absolute inset-0 flex items-center justify-center text-6xl sm:text-7xl opacity-25 group-hover:opacity-50 group-hover:scale-115 transition-all duration-600 ease-out"
-          >
-            {{ project.icon }}
-          </div>
+         <div class="absolute inset-0 flex items-center justify-center">
+
+  <!-- Show uploaded image if exists -->
+  @if (project.icon) {
+    <img
+      [src]="project.icon"
+      alt="{{ project.title }}"
+      class="w-full h-full object-cover opacity-30 group-hover:opacity-50 group-hover:scale-105 transition-all duration-600 ease-out"
+    />
+  } @else {
+    <!-- Fallback placeholder -->
+    <span class="text-6xl opacity-20">📁</span>
+  }
+
+  <!-- Admin upload overlay -->
+  @if (auth.isAdmin()) {
+    <label
+      [for]="'img-upload-' + project.id"
+      class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer z-10"
+    >
+      <div class="flex flex-col items-center gap-1 text-white/70 hover:text-white">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <span class="text-[0.65rem] font-['JetBrains_Mono',monospace] tracking-wider uppercase">
+          {{ project.icon ? 'Replace' : 'Upload' }}
+        </span>
+      </div>
+      <input
+        [id]="'img-upload-' + project.id"
+        type="file"
+        accept="image/*"
+        class="hidden"
+        (change)="onImageSelected($event, project.id)"
+      />
+    </label>
+
+    <!-- Upload progress indicator -->
+    @if (uploadingId() === project.id) {
+      <div class="absolute inset-0 flex items-center justify-center bg-black/60 z-20">
+        <svg class="w-6 h-6 animate-spin text-[#5b8def]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+      </div>
+    }
+  }
+</div>
 
           <!-- Shine sweep on hover -->
           <div
             class="absolute inset-0 bg-linear-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 ease-out"
           ></div>
 
-          <!-- Top-right badge -->
+          <!-- Top-right type badge -->
           <div
-            class="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/30 backdrop-blur-md border border-white/10 text-[0.6rem] font-['JetBrains_Mono',monospace] text-white/70 uppercase tracking-[1px] opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 delay-100"
+            class="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/30 backdrop-blur-md border border-white/10 text-[0.6rem] font-['JetBrains_Mono',monospace] text-white/70 uppercase tracking-[1px] opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 delay-100"
           >
             {{ project.type }}
           </div>
         </div>
 
-        <!-- Card Body — more padding, bigger text -->
+        <!-- Card Body -->
         <div class="p-6 sm:p-7 md:p-8">
           <!-- Project Type -->
           <p
             class="font-['JetBrains_Mono',monospace] text-[0.7rem] text-[#a78bfa] tracking-[1.5px] uppercase mb-3"
           >
-            {{ project.type }}
+            <app-inline-edit
+              [value]="project.type"
+              [isAdmin]="auth.isAdmin()"
+              (saved)="updateField(project.id, 'type', $event)"
+            />
           </p>
 
-          <!-- Title — larger -->
+          <!-- Title -->
           <h3
             class="text-lg sm:text-xl font-bold text-[#e8ecf4] mb-3 group-hover:text-white transition-colors duration-300 leading-snug"
           >
-            {{ project.title }}
+            <app-inline-edit
+              [value]="project.title"
+              [isAdmin]="auth.isAdmin()"
+              (saved)="updateField(project.id, 'title', $event)"
+            />
           </h3>
 
-          <!-- Description — larger, better line height -->
+          <!-- Description -->
           <p class="text-[0.88rem] sm:text-[0.92rem] text-[#6b7280] leading-[1.8] mb-6">
-            {{ project.description }}
+            <app-inline-edit
+              [value]="project.description"
+              type="textarea"
+              [isAdmin]="auth.isAdmin()"
+              (saved)="updateField(project.id, 'description', $event)"
+            />
           </p>
 
-          <!-- Tech Stack Tags — larger -->
+          <!-- Tech Stack Tags -->
           <div class="flex flex-wrap gap-2">
             @for (tech of project.stack; track tech) {
               <span
@@ -99,20 +173,79 @@
               >
                 {{ tech }}
               </span>
+            } @empty {
+              <span class="text-[0.65rem] text-[#515a6e] uppercase tracking-tight">No stack yet</span>
+            }
+            @if (auth.isAdmin()) {
+              <app-inline-edit
+                [value]="stackAsString(project.stack)"
+                type="textarea"
+                [isAdmin]="true"
+                displayClass="font-['JetBrains_Mono',monospace] text-[0.7rem] text-[#5b8def] opacity-50 hover:opacity-100"
+                (saved)="updateStack(project.id, $event)"
+              />
             }
           </div>
         </div>
 
-        <!-- Bottom accent line — slides in on hover -->
+        <!-- Bottom accent line -->
         <div
           class="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left"
         ></div>
       </div>
+    } @empty {
+      <!-- Empty state placeholder -->
+      <div class="md:col-span-2 relative bg-[rgba(14,20,40,0.5)] border border-dashed border-[rgba(100,140,255,0.15)] rounded-3xl overflow-hidden">
+        <div class="relative h-32 bg-[rgba(91,141,239,0.03)]">
+          <div class="absolute inset-0 flex items-center justify-center text-5xl opacity-10">📁</div>
+        </div>
+        <div class="p-6 sm:p-7">
+          <div class="h-3 w-24 rounded bg-[rgba(255,255,255,0.05)] mb-3"></div>
+          <div class="h-5 w-48 rounded bg-[rgba(255,255,255,0.04)] mb-3"></div>
+          <div class="space-y-2 mb-6">
+            <div class="h-3 w-full rounded bg-[rgba(255,255,255,0.03)]"></div>
+            <div class="h-3 w-4/5 rounded bg-[rgba(255,255,255,0.03)]"></div>
+          </div>
+          <p class="text-[#515a6e] text-[0.8rem] flex items-center gap-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            No projects yet.
+          </p>
+        </div>
+      </div>
     }
   </div>
+
+  <!-- Add Project button — admin only -->
+  @if (auth.isAdmin()) {
+    <div class="mt-8">
+      <button
+        type="button"
+        (click)="addProject()"
+        [disabled]="isAdding()"
+        class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl border border-dashed border-[rgba(91,141,239,0.25)] bg-[rgba(91,141,239,0.04)] text-[#5b8def] text-[0.8rem] font-medium hover:bg-[rgba(91,141,239,0.1)] hover:border-[rgba(91,141,239,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+      >
+        @if (isAdding()) {
+          <svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+          Creating…
+        } @else {
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Add Project
+        }
+      </button>
+    </div>
+  }
 </section>
 
 <style>
+  .dot-grid {
+    background-image: radial-gradient(circle, #ffffff 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
   .project-card.is-visible {
     opacity: 1 !important;
     transform: translateY(0) !important;

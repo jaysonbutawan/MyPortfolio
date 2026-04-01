@@ -26,79 +26,171 @@
   </div>
 
   <!-- Education Cards -->
-  <div class="flex flex-col gap-5 lg:gap-6">
-    @for (edu of educations; track i; let i = $index) {
+  <div class="flex flex-col gap-8">
+    @for (edu of educations(); track edu.id; let i = $index) {
       <div
         #eduCard
-        class="edu-card group relative flex flex-col md:flex-row items-start gap-5 md:gap-8 bg-[rgba(14,20,40,0.65)] border border-[rgba(100,140,255,0.08)] rounded-3xl p-6 sm:p-7 md:p-8 lg:p-9 opacity-0 translate-y-10 hover:bg-[rgba(20,30,60,0.8)] hover:border-[rgba(100,160,255,0.2)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.3)] transition-all duration-500 ease-in-out cursor-default overflow-hidden"
+        class="edu-card edu-grid group relative grid overflow-hidden rounded-[30px] border border-[rgba(100,140,255,0.09)] bg-[rgba(14,20,40,0.7)] opacity-0 translate-y-8 transition-all duration-500 ease-in-out hover:bg-[rgba(20,30,60,0.88)] hover:border-[rgba(100,160,255,0.22)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.45)]"
         [style.transitionDelay]="i * 150 + 'ms'"
       >
-        <!-- Left: Icon + Year -->
-        <div
-          class="flex md:flex-col items-center md:items-start gap-4 md:gap-3 md:min-w-35 hrink-0"
-        >
-          <!-- Icon — larger -->
-          <div
-            class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.1)] flex items-center justify-center text-xl sm:text-2xl group-hover:bg-[rgba(91,141,239,0.14)] group-hover:border-[rgba(91,141,239,0.25)] group-hover:shadow-[0_0_20px_rgba(91,141,239,0.15)] transition-all duration-400"
+        <!-- Delete button — admin only -->
+        @if (auth.isAdmin()) {
+          <button
+            type="button"
+            title="Delete education"
+            (click)="deleteEducation(edu.id)"
+            [disabled]="deletingId() !== null"
+            class="absolute top-4 right-4 z-20 inline-flex items-center justify-center w-8 h-8 rounded-xl bg-[rgba(239,68,68,0.06)] hover:bg-[rgba(239,68,68,0.18)] border border-[rgba(239,68,68,0.1)] hover:border-[rgba(239,68,68,0.35)] text-[#515a6e] hover:text-[#f87171] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
           >
-            {{ edu.icon }}
-          </div>
+            @if (deletingId() === edu.id) {
+              <svg class="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+            } @else {
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6M14 11v6"/>
+                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+            }
+          </button>
+        }
 
-          <!-- Year badge -->
+        <!-- Left: Year column -->
+        <div
+          class="relative flex flex-col items-center py-12 border-r border-[rgba(100,140,255,0.07)] bg-[rgba(10,15,35,0.4)] group-hover:bg-[rgba(15,22,50,0.6)] transition-colors duration-400 overflow-hidden"
+        >
           <div
-            class="font-['JetBrains_Mono',monospace] text-[0.82rem] sm:text-[0.85rem] text-[#5b8def] whitespace-nowrap tracking-[0.5px] px-3 py-1 rounded-lg bg-[rgba(91,141,239,0.05)] group-hover:bg-[rgba(91,141,239,0.1)] transition-colors duration-300"
+            class="absolute inset-x-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-[rgba(91,141,239,0.25)] to-transparent pointer-events-none"
+          ></div>
+
+          <div
+            class="relative z-10 w-4 h-4 rounded-full bg-[rgba(91,141,239,0.5)] border-2 border-[rgba(91,141,239,0.7)] mb-6 group-hover:bg-[#5b8def] group-hover:border-[#7aaeff] group-hover:shadow-[0_0_20px_rgba(91,141,239,0.8)] transition-all duration-300"
+          ></div>
+
+          <span
+            class="font-['JetBrains_Mono',monospace] text-[2.2rem] font-bold tracking-[2px] text-[rgba(91,141,239,0.75)] group-hover:text-[#7aaeff] transition-colors duration-300 leading-none px-2 year-vertical"
           >
-            {{ edu.year }}
-          </div>
+            <app-inline-edit
+              [value]="edu.year"
+              [isAdmin]="auth.isAdmin()"
+              (saved)="updateField(edu.id, 'year', $event)"
+            />
+          </span>
         </div>
 
         <!-- Right: Content -->
-        <div class="min-w-0 flex-1">
-          <!-- Degree — larger -->
-          <h3
-            class="text-lg sm:text-xl font-semibold text-[#e8ecf4] mb-1.5 group-hover:text-white transition-colors duration-300 leading-snug"
+        <div class="relative flex flex-col justify-center px-10 py-10 md:px-14">
+          <!-- Icon / badge label -->
+          <span
+            class="mb-6 inline-block w-fit rounded-[10px] border border-[rgba(91,141,239,0.2)] bg-[rgba(91,141,239,0.1)] px-5 py-2 font-['JetBrains_Mono',monospace] text-[1.2rem] font-bold uppercase tracking-[2px] text-[rgba(91,141,239,0.8)] group-hover:bg-[rgba(91,141,239,0.2)] group-hover:text-[#7aaeff] transition-all duration-300"
           >
-            {{ edu.degree }}
+            <app-inline-edit
+              [value]="edu.icon"
+              [isAdmin]="auth.isAdmin()"
+              (saved)="updateField(edu.id, 'icon', $event)"
+            />
+          </span>
+
+          <!-- Degree -->
+          <h3
+            class="mb-4 text-[2.8rem] font-extrabold leading-[1.1] tracking-[-0.03em] text-[#d8e2f4] group-hover:text-white transition-colors duration-300"
+          >
+            <app-inline-edit
+              [value]="edu.degree"
+              [isAdmin]="auth.isAdmin()"
+              (saved)="updateField(edu.id, 'degree', $event)"
+            />
           </h3>
 
-          <!-- School — larger -->
-          <p class="text-[0.92rem] sm:text-base text-[#8a94a8] mb-4">
-            {{ edu.school }}
+          <!-- School -->
+          <p class="mb-6 text-[1.8rem] font-medium text-[rgba(138,148,168,0.95)]">
+            <app-inline-edit
+              [value]="edu.school"
+              [isAdmin]="auth.isAdmin()"
+              (saved)="updateField(edu.id, 'school', $event)"
+            />
           </p>
 
-          <!-- Notes — larger, better spacing -->
-          <p class="text-[0.85rem] sm:text-[0.9rem] text-[#6b7280] leading-[1.8]">
-            {{ edu.note }}
-          </p>
-        </div>
-
-        <!-- Hover chevron -->
-        <div
-          class="hidden md:flex items-center self-center opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-400 delay-100"
-        >
-          <div
-            class="w-8 h-8 rounded-full bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.1)] flex items-center justify-center group-hover:bg-[rgba(91,141,239,0.14)] transition-colors duration-300"
+          <!-- Note -->
+          <p
+            class="max-w-4xl text-[1.4rem] leading-[1.6] text-[rgba(160,170,190,0.9)] italic border-l-4 border-[rgba(91,141,239,0.3)] pl-6"
           >
-            <i class="pi pi-chevron-right text-[0.65rem] text-[#5b8def]"></i>
-          </div>
-        </div>
+            <app-inline-edit
+              [value]="edu.note"
+              type="textarea"
+              [isAdmin]="auth.isAdmin()"
+              (saved)="updateField(edu.id, 'note', $event)"
+            />
+          </p>
 
-        <!-- Left accent bar — slides in on hover -->
-        <div
-          class="absolute left-0 top-0 bottom-0 w-0.75 bg-linear-to-b from-[#5b8def] via-[#a78bfa] to-[#34d399] scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-out origin-top"
-        ></div>
+          <!-- Card index watermark -->
+          <span
+            class="absolute top-8 right-10 font-['JetBrains_Mono',monospace] text-[5rem] font-black tracking-tighter opacity-10 text-[#5b8def] group-hover:opacity-20 group-hover:scale-110 transition-all duration-500 select-none"
+          >
+            {{ (i + 1).toString().padStart(2, '0') }}
+          </span>
+
+          <!-- Left accent line -->
+          <div
+            class="absolute left-0 top-0 bottom-0 w-1.5 scale-y-0 group-hover:scale-y-100 origin-top bg-gradient-to-b from-[#5b8def] via-[#a78bfa] to-[#34d399] transition-transform duration-500 ease-out"
+          ></div>
+        </div>
       </div>
     } @empty {
+      <!-- Empty state placeholder -->
       <div
-        class="text-[#515a6e] italic p-8 text-center text-[0.92rem] bg-[rgba(14,20,40,0.4)] rounded-2xl border border-[rgba(100,140,255,0.05)]"
+        class="edu-grid relative grid overflow-hidden rounded-[30px] border border-dashed border-[rgba(100,140,255,0.15)] bg-[rgba(14,20,40,0.5)]"
       >
-        No educational records found.
+        <div class="flex flex-col items-center py-12 border-r border-[rgba(100,140,255,0.07)] bg-[rgba(10,15,35,0.3)]">
+          <div class="w-4 h-4 rounded-full bg-[rgba(91,141,239,0.2)] border-2 border-[rgba(91,141,239,0.3)] mb-6"></div>
+          <div class="h-6 w-10 rounded bg-[rgba(255,255,255,0.04)]"></div>
+        </div>
+        <div class="flex flex-col justify-center px-10 py-10 md:px-14 gap-4">
+          <div class="h-6 w-28 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(91,141,239,0.1)]"></div>
+          <div class="h-10 w-64 rounded bg-[rgba(255,255,255,0.04)]"></div>
+          <div class="h-6 w-48 rounded bg-[rgba(255,255,255,0.03)]"></div>
+          <div class="h-4 w-full rounded bg-[rgba(255,255,255,0.03)]"></div>
+          <p class="text-[#515a6e] text-[0.8rem] flex items-center gap-2 mt-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            No education entries yet.
+          </p>
+        </div>
       </div>
     }
   </div>
+
+  <!-- Add Education button — admin only -->
+  @if (auth.isAdmin()) {
+    <div class="mt-8">
+      <button
+        type="button"
+        (click)="addEducation()"
+        [disabled]="isAdding()"
+        class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl border border-dashed border-[rgba(91,141,239,0.25)] bg-[rgba(91,141,239,0.04)] text-[#5b8def] text-[0.8rem] font-medium hover:bg-[rgba(91,141,239,0.1)] hover:border-[rgba(91,141,239,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+      >
+        @if (isAdding()) {
+          <svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+          Creating…
+        } @else {
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Add Education
+        }
+      </button>
+    </div>
+  }
 </section>
 
 <style>
+  .edu-grid {
+    grid-template-columns: 140px 1fr;
+  }
+
   .edu-card.is-visible {
     opacity: 1 !important;
     transform: translateY(0) !important;
@@ -106,5 +198,11 @@
 
   .edu-card.is-visible:hover {
     transform: translateX(6px) !important;
+  }
+
+  .year-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
   }
 </style>
