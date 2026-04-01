@@ -1,18 +1,15 @@
 <section
   id="hero"
-  class="relative min-h-screen w-full overflow-x-clip flex flex-col items-center justify-center
-         p-6 pt-24 md:p-12 md:pt-32 lg:p-20 font-['Outfit',sans-serif] text-[#e8ecf4]"
+  class="relative min-h-screen w-full overflow-x-clip flex flex-col items-center justify-center p-6 pt-24 md:p-12 md:pt-32 lg:p-20 font-['Outfit',sans-serif] text-[#e8ecf4]"
 >
-  <div
-    class="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center z-10 grow"
-  >
-
+  <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center z-10 grow">
     <div class="flex justify-center items-center py-6 lg:py-0 order-first lg:order-last">
-        <app-hero-orb />
+      <app-hero-orb />
     </div>
 
-    <div class="flex flex-col items-center text-center lg:items-start lg:text-left space-y-6 md:space-y-8">
-
+    <div
+      class="flex flex-col items-center text-center lg:items-start lg:text-left space-y-6 md:space-y-8"
+    >
       <div
         class="inline-flex items-center gap-2 px-3 py-1 mt-4 lg:mt-5 rounded-full bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.15)] text-[0.7rem] sm:text-xs lg:text-3xl font-bold text-[#7ba8ff] uppercase tracking-[2px]"
       >
@@ -25,7 +22,9 @@
       </div>
 
       <div class="space-y-4 w-full lg:max-w-[95%]">
-        <h1 class="text-4xl sm:text-6xl xl:text-7xl font-extrabold tracking-[-2px] sm:tracking-[-4px] leading-[1.1] break-words">
+        <h1
+          class="text-4xl sm:text-6xl xl:text-7xl font-extrabold tracking-[-2px] sm:tracking-[-4px] leading-[1.1] wrap-break-word"
+        >
           <app-inline-edit
             [value]="hero().name"
             [isAdmin]="auth.isAdmin()"
@@ -33,7 +32,9 @@
           />
         </h1>
 
-        <h2 class="text-lg sm:text-2xl font-light text-[#8a94a8] tracking-tight leading-relaxed break-words">
+        <h2
+          class="text-lg sm:text-2xl font-light text-[#8a94a8] tracking-tight leading-relaxed wrap-break-word"
+        >
           Creative
           <app-inline-edit
             [value]="hero().role"
@@ -44,8 +45,10 @@
         </h2>
       </div>
 
-      <div class="w-full max-w-[500px] lg:max-w-[85%]">
-        <p class="text-[#8a94a8] text-[0.95rem] md:text-lg leading-relaxed whitespace-pre-wrap break-words">
+      <div class="w-full max-w-125 lg:max-w-[85%]">
+        <p
+          class="text-[#8a94a8] text-[0.95rem] md:text-lg leading-relaxed whitespace-pre-wrap wrap-break-word"
+        >
           <app-inline-edit
             [value]="hero().summary"
             type="textarea"
@@ -54,7 +57,9 @@
           />
         </p>
       </div>
-      <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto pt-4">
+      <div
+        class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto pt-4"
+      >
         <button
           type="button"
           class="w-full sm:w-auto group relative overflow-hidden bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] text-white font-semibold text-[0.95rem] py-3.5 px-8 rounded-xl flex items-center justify-center gap-2.5 shadow-xl transition-all cursor-pointer hover:-translate-y-1"
