@@ -1,25 +1,18 @@
-import {
-  Component,
-  AfterViewInit,
-  OnDestroy,
-  QueryList,
-  ElementRef,
-  ViewChildren,
-} from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, QueryList, ElementRef, ViewChildren, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SKILL_MAP, SKILL_PERCENT } from '../../shared/components/skill-map.constant';
+import { TechStackService } from './skills.service';
+import { AuthService } from '../../core/services/auth.service';
 
-interface Skill {
+export interface Skill {
+  id: number;
   name: string;
-  percent: number;
-  animated: boolean;
-}
-
-interface SkillCategory {
-  icon: string;
-  iconBg: string;
-  title: string;
-  skills: Skill[];
-  tags: string[];
+  is_active: boolean;
+  sort_order: number;
+  animated?: boolean;
+  iconClass?: string;
+  color?: string;
+  percent?: number;
 }
 
 @Component({
@@ -28,76 +21,119 @@ interface SkillCategory {
   imports: [CommonModule],
   templateUrl: './skills.component.html',
 })
-export class SkillsComponent implements AfterViewInit, OnDestroy {
+export class SkillsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren('skillCard') skillCards!: QueryList<ElementRef>;
 
+  private techStackService = inject(TechStackService);
+  auth = inject(AuthService);
   private observer: IntersectionObserver | null = null;
 
-  categories: SkillCategory[] = [
-    {
-      icon: '⚡',
-      iconBg: 'bg-[rgba(91,141,239,0.1)]',
-      title: 'Frontend',
-      skills: [
-        { name: 'Angular / TypeScript', percent: 80, animated: false },
-        { name: 'HTML / CSS / TailwindCSS', percent: 85, animated: false },
-        { name: 'JavaScript (ES6+)', percent: 60, animated: false },
-        { name: 'Flutter', percent: 88, animated: false },
-      ],
-      tags: ['RxJS', 'NgRx', 'Bootstrap', 'Responsive','Mobile Applications'],
-    },
-    {
-      icon: '🔧',
-      iconBg: 'bg-[rgba(167,139,250,0.1)]',
-      title: 'Backend',
-      skills: [
-        { name: 'PHP / Laravel', percent: 90, animated: false },
-        { name: 'MySQL/PostgreSQL / Database Design', percent: 88, animated: false },
-        { name: 'REST API Development', percent: 70, animated: false },
-        { name: 'Node.js', percent: 65, animated: false },
-      ],
-      tags: ['Caching', 'Sanctum', 'Redis', 'Queue Jobs','Idempotent APIs'],
-    },
-    {
-      icon: '🚀',
-      iconBg: 'bg-[rgba(52,211,153,0.1)]',
-      title: 'Tools & DevOps',
-      skills: [
-        { name: 'Git / GitHub', percent: 93, animated: false },
-        { name: 'Docker', percent: 60, animated: false },
-        { name: 'CI/CD Pipelines', percent: 70, animated: false },
-      ],
-      tags: ['VS Code', 'Postman', 'Figma', 'Jira'],
-    },
-  ];
+  skills = signal<Skill[]>([]);
+  deletingId = signal<number | null>(null);
+  isAdding = signal(false);
+  showPicker = signal(false);
+  pickerSearch = signal('');
+
+  availableSkills = computed(() => {
+    const existing = new Set(this.skills().map((s) => s.name));
+    const search = this.pickerSearch().toLowerCase();
+    return Object.keys(SKILL_MAP)
+      .filter((name) => !existing.has(name))
+      .filter((name) => !search || name.toLowerCase().includes(search))
+      .map((name) => ({ name, ...SKILL_MAP[name] }));
+  });
+
+  ngOnInit(): void {
+    this.techStackService.getAll().subscribe((data) => {
+      this.skills.set(data.map((s) => this.resolveSkill(s)));
+      setTimeout(() => this.startObserving(), 0);
+    });
+  }
+
+  private resolveSkill(s: any): Skill {
+    const meta = SKILL_MAP[s.name];
+    return {
+      ...s,
+      animated: false,
+      percent: SKILL_PERCENT,
+      iconClass: meta?.iconClass ? `${meta.iconClass} colored` : 'devicon-devicon-plain',
+      color: meta?.color ?? '#888888',
+    };
+  }
+
+  addSkill(name: string): void {
+    if (this.isAdding()) return;
+    this.isAdding.set(true);
+
+    const payload = {
+      name,
+      is_active: true,
+      sort_order: this.skills().length + 1,
+    };
+
+    this.techStackService.create(payload as any).subscribe({
+      next: (res) => {
+        this.skills.update((list) => [...list, this.resolveSkill(res)]);
+        this.isAdding.set(false);
+        setTimeout(() => this.startObserving(), 100);
+      },
+      error: (err) => {
+        console.error('Failed to add skill:', err);
+        this.isAdding.set(false);
+      },
+    });
+  }
+
+  deleteSkill(id: number): void {
+    if (this.deletingId() !== null) return;
+    this.deletingId.set(id);
+
+    this.techStackService.delete(id).subscribe({
+      next: () => {
+        this.skills.update((list) => list.filter((s) => s.id !== id));
+        this.deletingId.set(null);
+      },
+      error: (err) => {
+        console.error('Failed to delete skill:', err);
+        this.deletingId.set(null);
+      },
+    });
+  }
+
+  togglePicker(): void {
+    this.showPicker.update((v) => !v);
+    if (!this.showPicker()) this.pickerSearch.set('');
+  }
+
+  onPickerSearch(event: Event): void {
+    this.pickerSearch.set((event.target as HTMLInputElement).value);
+  }
+
+  private startObserving(): void {
+    if (!this.observer) return;
+    this.skillCards.forEach((card) => this.observer!.observe(card.nativeElement));
+  }
 
   ngAfterViewInit(): void {
     this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Find which card index became visible
             const index = this.skillCards
               .toArray()
               .findIndex((card) => card.nativeElement === entry.target);
-
-            if (index >= 0) {
-              // Animate skill bars with a slight delay
+            if (index >= 0 && this.skills()[index]) {
               setTimeout(() => {
-                this.categories[index].skills.forEach((skill) => {
-                  skill.animated = true;
-                });
-              }, index * 150);
+                this.skills.update((list) =>
+                  list.map((s, i) => (i === index ? { ...s, animated: true } : s))
+                );
+              }, 100);
             }
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
-
-    this.skillCards.forEach((card) => {
-      this.observer!.observe(card.nativeElement);
-    });
   }
 
   ngOnDestroy(): void {

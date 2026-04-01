@@ -54,6 +54,7 @@ export class ExperienceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   experiences = signal<Experience[]>([]);
   isAdding = signal(false);
+  deletingId = signal<number | null>(null);
 
  ngOnInit(): void {
   this.experienceService.getExperiences().subscribe({
@@ -91,6 +92,22 @@ export class ExperienceComponent implements OnInit, AfterViewInit, OnDestroy {
         );
       },
       error: (err) => console.error('Failed to save experience:', err),
+    });
+  }
+
+  deleteExperience(id: number): void {
+    if (this.deletingId() !== null) return;
+    this.deletingId.set(id);
+
+    this.experienceService.deleteExperience(id).subscribe({
+      next: () => {
+        this.experiences.update((list) => list.filter((e) => e.id !== id));
+        this.deletingId.set(null);
+      },
+      error: (err) => {
+        console.error('Failed to delete experience:', err);
+        this.deletingId.set(null);
+      },
     });
   }
 

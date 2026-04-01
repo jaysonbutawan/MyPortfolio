@@ -49,6 +49,15 @@ export class ExperienceService {
     );
   }
 
+  deleteExperience(id: number): Observable<void> {
+    const url = `${this.API_URL}/${id}`;
+    return this.http.delete<void>(url).pipe(
+      tap({
+        error: (err) => console.error('[ExperienceService] DELETE failed:', err.status, err.error),
+      })
+    );
+  }
+
   updateExperience(id: number, data: ExperiencePayload): Observable<ExperienceApiResponse> {
     const url = `${this.API_URL}/${id}`;
     console.log('[ExperienceService] PUT →', url, 'Payload:', data);
