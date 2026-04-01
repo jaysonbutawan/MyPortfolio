@@ -1,0 +1,44 @@
+<div
+  class="relative flex items-center justify-center order-first lg:order-last w-full"
+  #orbContainer
+  (mousemove)="onMouseMove($event)"
+  (mouseleave)="onMouseLeave()"
+  (mouseenter)="onMouseEnter()"
+>
+  <div
+    class="absolute w-[280px] h-[280px] sm:w-[400px] sm:h-[400px] lg:w-[500px] lg:h-[500px] rounded-full pointer-events-none transition-opacity duration-700"
+    [style.opacity]="isHovered() ? 0.6 : 0.25"
+    [style.background]="
+      'radial-gradient(circle, rgba(91,141,239,0.15) 0%, rgba(167,139,250,0.08) 40%, transparent 70%)'
+    "
+    [style.filter]="'blur(' + (isHovered() ? '60px' : '40px') + ')'"
+  ></div>
+
+  <div
+    class="relative w-60h-[240px] sm:w-[350px] sm:h-[350px] lg:w-[420px] lg:h-[420px] rounded-full transition-transform duration-200 ease-out"
+    [style.transform]="orbTransform()"
+    #orbMain
+  >
+    <div
+      class="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_35%,rgba(91,141,239,0.15),rgba(167,139,250,0.08),transparent_70%)] border border-[rgba(91,141,239,0.1)] animate-[orbFloat_8s_ease-in-out_infinite] transition-all duration-500"
+      [style.borderColor]="isHovered() ? 'rgba(91,141,239,0.25)' : 'rgba(91,141,239,0.1)'"
+      [style.boxShadow]="
+        isHovered()
+          ? '0 0 60px rgba(91,141,239,0.2), 0 0 120px rgba(167,139,250,0.1), inset 0 0 40px rgba(91,141,239,0.08)'
+          : '0 0 30px rgba(91,141,239,0.05), inset 0 0 20px rgba(91,141,239,0.03)'
+      "
+    >
+      <div
+        class="absolute inset-4 sm:inset-7 lg:inset-9 rounded-full bg-[radial-gradient(circle,#0c1120_0%,#06080f_100%)] border border-[rgba(100,140,255,0.06)] flex items-center justify-center z-20 overflow-hidden group cursor-pointer transition-all duration-500"
+        [style.borderColor]="isHovered() ? 'rgba(100,160,255,0.15)' : 'rgba(100,160,255,0.06)'"
+      >
+        <img
+          src="assets/me.jpg"
+          alt="Jayson Butawan"
+          class="w-full h-full object-cover rounded-full transition-transform duration-700 ease-out"
+          [style.transform]="'scale(' + (isHovered() ? '1.1' : '1.05') + ')'"
+        />
+      </div>
+    </div>
+  </div>
+</div>

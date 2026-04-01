@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { HeroOrbComponent } from './orb.component';
+import { HeroOrbComponent } from './orb/orb.component';
 import { TechStackBarComponent } from './tech-stack/tech-stack.component';
 import { InlineEditComponent } from '../../shared/components/inline-edit/inline-edit.component';
 import { HeroService } from './hero.service';

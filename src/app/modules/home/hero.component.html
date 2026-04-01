@@ -1,16 +1,22 @@
 <section
   id="hero"
-  class="relative min-h-screen w-full overflow-x-clip flex flex-col items-center justify-center p-6 md:p-8 font-['Outfit',sans-serif] text-[#e8ecf4]"
+  class="relative min-h-screen w-full overflow-x-clip flex flex-col items-center justify-center
+         p-6 pt-24 md:p-12 md:pt-32 lg:p-20 font-['Outfit',sans-serif] text-[#e8ecf4]"
 >
   <div
-    class="w-full -mt-20 md:-mt-28 lg:px-20 xl:px-45 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center z-10 grow"
+    class="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center z-10 grow"
   >
-    <div class="space-y-7">
-      <!-- Status badge -->
+
+    <div class="flex justify-center items-center py-6 lg:py-0 order-first lg:order-last">
+        <app-hero-orb />
+    </div>
+
+    <div class="flex flex-col items-center text-center lg:items-start lg:text-left space-y-6 md:space-y-8">
+
       <div
-        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full overflow-visible bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.15)] text-3xl font-medium text-[#7ba8ff] uppercase tracking-widest"
+        class="inline-flex items-center gap-2 px-3 py-1 mt-4 lg:mt-5 rounded-full bg-[rgba(91,141,239,0.08)] border border-[rgba(91,141,239,0.15)] text-[0.7rem] sm:text-xs lg:text-3xl font-bold text-[#7ba8ff] uppercase tracking-[2px]"
       >
-        <span class="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-pulse"></span>
+        <span class="w-1.5 h-1.5 shrink-0 rounded-full bg-[#34d399] animate-pulse"></span>
         <app-inline-edit
           [value]="hero().statusBadge"
           [isAdmin]="auth.isAdmin()"
@@ -18,58 +24,53 @@
         />
       </div>
 
-      <div class="space-y-3 lg:max-w-[90%]"> <h1 class="text-5xl sm:text-7xl lg:text-7xl font-extrabold tracking-[-3px] leading-[1.1] break-words">
-    <app-inline-edit
-      [value]="hero().name"
-      [isAdmin]="auth.isAdmin()"
-      (saved)="updateField('name', $event)"
-    />
-  </h1>
+      <div class="space-y-4 w-full lg:max-w-[95%]">
+        <h1 class="text-4xl sm:text-6xl xl:text-7xl font-extrabold tracking-[-2px] sm:tracking-[-4px] leading-[1.1] break-words">
+          <app-inline-edit
+            [value]="hero().name"
+            [isAdmin]="auth.isAdmin()"
+            (saved)="updateField('name', $event)"
+          />
+        </h1>
 
-  <h2 class="text-xl md:text-2xl font-light text-[#8a94a8] tracking-[-0.3px] leading-relaxed break-words">
-    Creative
-    <app-inline-edit
-      [value]="hero().role"
-      [isAdmin]="auth.isAdmin()"
-      displayClass="font-semibold text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
-      (saved)="updateField('role', $event)"
-    />
-  </h2>
-</div>
+        <h2 class="text-lg sm:text-2xl font-light text-[#8a94a8] tracking-tight leading-relaxed break-words">
+          Creative
+          <app-inline-edit
+            [value]="hero().role"
+            [isAdmin]="auth.isAdmin()"
+            displayClass="font-semibold text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
+            (saved)="updateField('role', $event)"
+          />
+        </h2>
+      </div>
 
-      <!-- Summary -->
-     <div class="flex flex-col w-full">
-  <p
-    class="text-[#8a94a8] text-[0.95rem] leading-[1.8] lg:max-w-[85%] w-full block whitespace-pre-wrap break-words"
-  >
-    <app-inline-edit
-      [value]="hero().summary"
-      type="textarea"
-      [isAdmin]="auth.isAdmin()"
-      (saved)="updateField('summary', $event)"
-    />
-  </p>
-</div>
-
-      <div class="flex flex-wrap items-center gap-4 pt-2">
+      <div class="w-full max-w-[500px] lg:max-w-[85%]">
+        <p class="text-[#8a94a8] text-[0.95rem] md:text-lg leading-relaxed whitespace-pre-wrap break-words">
+          <app-inline-edit
+            [value]="hero().summary"
+            type="textarea"
+            [isAdmin]="auth.isAdmin()"
+            (saved)="updateField('summary', $event)"
+          />
+        </p>
+      </div>
+      <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full sm:w-auto pt-4">
         <button
           type="button"
-          class="group relative overflow-hidden bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] text-white font-semibold text-[0.95rem] py-3.5 px-7 rounded-xl flex items-center gap-2.5 shadow-xl transition-all cursor-pointer"
+          class="w-full sm:w-auto group relative overflow-hidden bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399] text-white font-semibold text-[0.95rem] py-3.5 px-8 rounded-xl flex items-center justify-center gap-2.5 shadow-xl transition-all cursor-pointer hover:-translate-y-1"
         >
           <i class="pi pi-download text-sm"></i>
           <span>Download CV</span>
         </button>
         <button
           type="button"
-          class="bg-transparent border border-[rgba(100,160,255,0.2)] text-[#e8ecf4] font-semibold text-[0.95rem] py-3.5 px-7 rounded-xl flex items-center gap-2.5 hover:bg-[rgba(91,141,239,0.06)] transition-all cursor-pointer"
+          class="w-full sm:w-auto bg-transparent border border-[rgba(100,160,255,0.2)] text-[#e8ecf4] font-semibold text-[0.95rem] py-3.5 px-8 rounded-xl flex items-center justify-center gap-2.5 hover:bg-[rgba(91,141,239,0.06)] transition-all cursor-pointer"
         >
           <i class="pi pi-envelope text-sm"></i>
           Contact Me
         </button>
       </div>
     </div>
-
-    <app-hero-orb />
   </div>
 
   <app-tech-stack-bar />
