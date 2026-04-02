@@ -1,36 +1,34 @@
 <section
   id="education"
-  class="relative py-16 md:py-24 px-6 md:px-12 lg:px-20 xl:px-28 w-full mx-auto"
+  class="relative py-12 md:py-24 px-4 sm:px-6 md:px-12 lg:px-20 xl:px-28 w-full mx-auto"
 >
   <!-- Section Header -->
-  <div class="mb-12 md:mb-16">
+  <div class="mb-10 md:mb-16">
     <p
-      class="font-['JetBrains_Mono',monospace] text-4xl text-[#5b8def] tracking-[4px] uppercase opacity-80 mb-3"
+      class="font-['JetBrains_Mono',monospace] text-sm sm:text-base text-[#5b8def] tracking-[4px] uppercase opacity-80 mb-3"
     >
       // Education
     </p>
     <h2
-      class="text-3xl sm:text-4xl md:text-[2.8rem] font-bold tracking-[-1px] leading-[1.15] text-[#e8ecf4]"
+      class="text-2xl sm:text-3xl md:text-[2.8rem] font-bold tracking-[-1px] leading-[1.15] text-[#e8ecf4]"
     >
       Academic
-      <span
-        class="text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]"
-      >
+      <span class="text-transparent bg-clip-text bg-linear-to-r from-[#5b8def] via-[#a78bfa] to-[#34d399]">
         background
       </span>
     </h2>
-    <p class="text-[#515a6e] text-[0.92rem] mt-4 max-w-xl leading-relaxed">
+    <p class="text-[#515a6e] text-[0.85rem] sm:text-[0.92rem] mt-4 max-w-xl leading-relaxed">
       My academic journey and professional certifications that shaped my expertise in software
       development.
     </p>
   </div>
 
   <!-- Education Cards -->
-  <div class="flex flex-col gap-8">
+  <div class="flex flex-col gap-5 sm:gap-8">
     @for (edu of educations(); track edu.id; let i = $index) {
       <div
         #eduCard
-        class="edu-card edu-grid group relative grid overflow-hidden rounded-[30px] border border-[rgba(100,140,255,0.09)] bg-[rgba(14,20,40,0.7)] opacity-0 translate-y-8 transition-all duration-500 ease-in-out hover:bg-[rgba(20,30,60,0.88)] hover:border-[rgba(100,160,255,0.22)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.45)]"
+        class="edu-card group relative overflow-hidden rounded-2xl sm:rounded-[30px] border border-[rgba(100,140,255,0.09)] bg-[rgba(14,20,40,0.7)] opacity-0 translate-y-8 transition-all duration-500 ease-in-out hover:bg-[rgba(20,30,60,0.88)] hover:border-[rgba(100,160,255,0.22)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.45)]"
         [style.transitionDelay]="i * 150 + 'ms'"
       >
         <!-- Delete button — admin only -->
@@ -40,7 +38,7 @@
             title="Delete education"
             (click)="deleteEducation(edu.id)"
             [disabled]="deletingId() !== null"
-            class="absolute top-4 right-4 z-20 inline-flex items-center justify-center w-8 h-8 rounded-xl bg-[rgba(239,68,68,0.06)] hover:bg-[rgba(239,68,68,0.18)] border border-[rgba(239,68,68,0.1)] hover:border-[rgba(239,68,68,0.35)] text-[#515a6e] hover:text-[#f87171] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+            class="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 inline-flex items-center justify-center w-8 h-8 rounded-xl bg-[rgba(239,68,68,0.06)] hover:bg-[rgba(239,68,68,0.18)] border border-[rgba(239,68,68,0.1)] hover:border-[rgba(239,68,68,0.35)] text-[#515a6e] hover:text-[#f87171] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
           >
             @if (deletingId() === edu.id) {
               <svg class="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -48,30 +46,21 @@
               </svg>
             } @else {
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"/>
-                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                <path d="M10 11v6M14 11v6"/>
-                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+               <polyline points="3 6 5 6 21 6" />
+                  <path
+                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                  />
               </svg>
             }
           </button>
         }
 
-        <!-- Left: Year column -->
-        <div
-          class="relative flex flex-col items-center py-12 border-r border-[rgba(100,140,255,0.07)] bg-[rgba(10,15,35,0.4)] group-hover:bg-[rgba(15,22,50,0.6)] transition-colors duration-400 overflow-hidden"
-        >
+        <!-- MOBILE: stacked header strip (year + node) — only visible below sm -->
+        <div class="flex sm:hidden items-center gap-3 px-5 py-3.5 border-b border-[rgba(100,140,255,0.07)] bg-[rgba(10,15,35,0.4)]">
           <div
-            class="absolute inset-x-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-[rgba(91,141,239,0.25)] to-transparent pointer-events-none"
+            class="w-2.5 h-2.5 rounded-full shrink-0 bg-[rgba(91,141,239,0.5)] border-2 border-[rgba(91,141,239,0.7)] group-hover:bg-[#5b8def] group-hover:border-[#7aaeff] group-hover:shadow-[0_0_12px_rgba(91,141,239,0.7)] transition-all duration-300"
           ></div>
-
-          <div
-            class="relative z-10 w-4 h-4 rounded-full bg-[rgba(91,141,239,0.5)] border-2 border-[rgba(91,141,239,0.7)] mb-6 group-hover:bg-[#5b8def] group-hover:border-[#7aaeff] group-hover:shadow-[0_0_20px_rgba(91,141,239,0.8)] transition-all duration-300"
-          ></div>
-
-          <span
-            class="font-['JetBrains_Mono',monospace] text-[2.2rem] font-bold tracking-[2px] text-[rgba(91,141,239,0.75)] group-hover:text-[#7aaeff] transition-colors duration-300 leading-none px-2 year-vertical"
-          >
+          <span class="font-['JetBrains_Mono',monospace] text-sm font-bold tracking-[2px] text-[rgba(91,141,239,0.75)] group-hover:text-[#7aaeff] transition-colors duration-300">
             <app-inline-edit
               [value]="edu.year"
               [isAdmin]="auth.isAdmin()"
@@ -80,11 +69,83 @@
           </span>
         </div>
 
-        <!-- Right: Content -->
-        <div class="relative flex flex-col justify-center px-10 py-10 md:px-14">
-          <!-- Icon / badge label -->
+        <!-- DESKTOP grid: original layout — only visible at sm and above -->
+        <div class="hidden sm:grid edu-grid">
+
+          <!-- Left: Year column — unchanged from original -->
+          <div
+            class="relative flex flex-col items-center py-12 border-r border-[rgba(100,140,255,0.07)] bg-[rgba(10,15,35,0.4)] group-hover:bg-[rgba(15,22,50,0.6)] transition-colors duration-400 overflow-hidden"
+          >
+            <div
+              class="absolute inset-x-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-[rgba(91,141,239,0.25)] to-transparent pointer-events-none"
+            ></div>
+            <div
+              class="relative z-10 w-4 h-4 rounded-full bg-[rgba(91,141,239,0.5)] border-2 border-[rgba(91,141,239,0.7)] mb-6 group-hover:bg-[#5b8def] group-hover:border-[#7aaeff] group-hover:shadow-[0_0_20px_rgba(91,141,239,0.8)] transition-all duration-300"
+            ></div>
+            <span
+              class="font-['JetBrains_Mono',monospace] text-[2.2rem] font-bold tracking-[2px] text-[rgba(91,141,239,0.75)] group-hover:text-[#7aaeff] transition-colors duration-300 leading-none px-2 year-vertical"
+            >
+              <app-inline-edit
+                [value]="edu.year"
+                [isAdmin]="auth.isAdmin()"
+                (saved)="updateField(edu.id, 'year', $event)"
+              />
+            </span>
+          </div>
+
+          <!-- Right: Content — unchanged from original -->
+          <div class="relative flex flex-col justify-center px-10 py-10 md:px-14">
+            <span
+              class="mb-6 inline-block w-fit rounded-[10px] border border-[rgba(91,141,239,0.2)] bg-[rgba(91,141,239,0.1)] px-5 py-2 font-['JetBrains_Mono',monospace] text-[1.2rem] font-bold uppercase tracking-[2px] text-[rgba(91,141,239,0.8)] group-hover:bg-[rgba(91,141,239,0.2)] group-hover:text-[#7aaeff] transition-all duration-300"
+            >
+              <app-inline-edit
+                [value]="edu.icon"
+                [isAdmin]="auth.isAdmin()"
+                (saved)="updateField(edu.id, 'icon', $event)"
+              />
+            </span>
+            <h3
+              class="mb-4 text-[2.8rem] font-extrabold leading-[1.1] tracking-[-0.03em] text-[#d8e2f4] group-hover:text-white transition-colors duration-300"
+            >
+              <app-inline-edit
+                [value]="edu.degree"
+                [isAdmin]="auth.isAdmin()"
+                (saved)="updateField(edu.id, 'degree', $event)"
+              />
+            </h3>
+            <p class="mb-6 text-[1.8rem] font-medium text-[rgba(138,148,168,0.95)]">
+              <app-inline-edit
+                [value]="edu.school"
+                [isAdmin]="auth.isAdmin()"
+                (saved)="updateField(edu.id, 'school', $event)"
+              />
+            </p>
+            <p
+              class="max-w-4xl text-[1.4rem] leading-[1.6] text-[rgba(160,170,190,0.9)] italic border-l-4 border-[rgba(91,141,239,0.3)] pl-6"
+            >
+              <app-inline-edit
+                [value]="edu.note"
+                type="textarea"
+                [isAdmin]="auth.isAdmin()"
+                (saved)="updateField(edu.id, 'note', $event)"
+              />
+            </p>
+            <span
+              class="absolute top-8 right-10 font-['JetBrains_Mono',monospace] text-[5rem] font-black tracking-tighter opacity-10 text-[#5b8def] group-hover:opacity-20 group-hover:scale-110 transition-all duration-500 select-none"
+            >
+              {{ (i + 1).toString().padStart(2, '0') }}
+            </span>
+            <div
+              class="absolute left-0 top-0 bottom-0 w-1.5 scale-y-0 group-hover:scale-y-100 origin-top bg-gradient-to-b from-[#5b8def] via-[#a78bfa] to-[#34d399] transition-transform duration-500 ease-out"
+            ></div>
+          </div>
+        </div>
+
+        <!-- MOBILE: content block — only visible below sm -->
+        <div class="flex sm:hidden flex-col px-5 py-5 relative">
+          <!-- Badge -->
           <span
-            class="mb-6 inline-block w-fit rounded-[10px] border border-[rgba(91,141,239,0.2)] bg-[rgba(91,141,239,0.1)] px-5 py-2 font-['JetBrains_Mono',monospace] text-[1.2rem] font-bold uppercase tracking-[2px] text-[rgba(91,141,239,0.8)] group-hover:bg-[rgba(91,141,239,0.2)] group-hover:text-[#7aaeff] transition-all duration-300"
+            class="mb-4 inline-block w-fit rounded-lg border border-[rgba(91,141,239,0.2)] bg-[rgba(91,141,239,0.1)] px-3 py-1.5 font-['JetBrains_Mono',monospace] text-[0.65rem] font-bold uppercase tracking-[1.5px] text-[rgba(91,141,239,0.8)] group-hover:bg-[rgba(91,141,239,0.2)] group-hover:text-[#7aaeff] transition-all duration-300"
           >
             <app-inline-edit
               [value]="edu.icon"
@@ -95,7 +156,7 @@
 
           <!-- Degree -->
           <h3
-            class="mb-4 text-[2.8rem] font-extrabold leading-[1.1] tracking-[-0.03em] text-[#d8e2f4] group-hover:text-white transition-colors duration-300"
+            class="mb-2 text-[1.25rem] font-extrabold leading-[1.2] tracking-[-0.02em] text-[#d8e2f4] group-hover:text-white transition-colors duration-300"
           >
             <app-inline-edit
               [value]="edu.degree"
@@ -105,7 +166,7 @@
           </h3>
 
           <!-- School -->
-          <p class="mb-6 text-[1.8rem] font-medium text-[rgba(138,148,168,0.95)]">
+          <p class="mb-4 text-[0.95rem] font-medium text-[rgba(138,148,168,0.95)]">
             <app-inline-edit
               [value]="edu.school"
               [isAdmin]="auth.isAdmin()"
@@ -115,7 +176,7 @@
 
           <!-- Note -->
           <p
-            class="max-w-4xl text-[1.4rem] leading-[1.6] text-[rgba(160,170,190,0.9)] italic border-l-4 border-[rgba(91,141,239,0.3)] pl-6"
+            class="text-[0.82rem] leading-[1.75] text-[rgba(160,170,190,0.9)] italic border-l-[3px] border-[rgba(91,141,239,0.3)] pl-4"
           >
             <app-inline-edit
               [value]="edu.note"
@@ -125,37 +186,50 @@
             />
           </p>
 
-          <!-- Card index watermark -->
-          <span
-            class="absolute top-8 right-10 font-['JetBrains_Mono',monospace] text-[5rem] font-black tracking-tighter opacity-10 text-[#5b8def] group-hover:opacity-20 group-hover:scale-110 transition-all duration-500 select-none"
-          >
-            {{ (i + 1).toString().padStart(2, '0') }}
-          </span>
-
-          <!-- Left accent line -->
+          <!-- Accent bar -->
           <div
-            class="absolute left-0 top-0 bottom-0 w-1.5 scale-y-0 group-hover:scale-y-100 origin-top bg-gradient-to-b from-[#5b8def] via-[#a78bfa] to-[#34d399] transition-transform duration-500 ease-out"
+            class="absolute left-0 top-0 bottom-0 w-1 scale-y-0 group-hover:scale-y-100 origin-top bg-gradient-to-b from-[#5b8def] via-[#a78bfa] to-[#34d399] transition-transform duration-500 ease-out"
           ></div>
         </div>
+
       </div>
     } @empty {
-      <!-- Empty state placeholder -->
+      <!-- Empty state -->
       <div
-        class="edu-grid relative grid overflow-hidden rounded-[30px] border border-dashed border-[rgba(100,140,255,0.15)] bg-[rgba(14,20,40,0.5)]"
+        class="relative overflow-hidden rounded-2xl sm:rounded-[30px] border border-dashed border-[rgba(100,140,255,0.15)] bg-[rgba(14,20,40,0.5)]"
       >
-        <div class="flex flex-col items-center py-12 border-r border-[rgba(100,140,255,0.07)] bg-[rgba(10,15,35,0.3)]">
-          <div class="w-4 h-4 rounded-full bg-[rgba(91,141,239,0.2)] border-2 border-[rgba(91,141,239,0.3)] mb-6"></div>
-          <div class="h-6 w-10 rounded bg-[rgba(255,255,255,0.04)]"></div>
-        </div>
-        <div class="flex flex-col justify-center px-10 py-10 md:px-14 gap-4">
-          <div class="h-6 w-28 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(91,141,239,0.1)]"></div>
-          <div class="h-10 w-64 rounded bg-[rgba(255,255,255,0.04)]"></div>
-          <div class="h-6 w-48 rounded bg-[rgba(255,255,255,0.03)]"></div>
+        <!-- Mobile empty -->
+        <div class="flex sm:hidden flex-col px-5 py-8 gap-3">
+          <div class="h-5 w-24 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(91,141,239,0.1)]"></div>
+          <div class="h-6 w-48 rounded bg-[rgba(255,255,255,0.04)]"></div>
+          <div class="h-4 w-36 rounded bg-[rgba(255,255,255,0.03)]"></div>
           <div class="h-4 w-full rounded bg-[rgba(255,255,255,0.03)]"></div>
-          <p class="text-[#515a6e] text-[0.8rem] flex items-center gap-2 mt-2">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p class="text-[#515a6e] text-[0.75rem] flex items-center gap-2 mt-1">
+            <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
             No education entries yet.
           </p>
+        </div>
+
+        <!-- Desktop empty — original -->
+        <div class="hidden sm:grid edu-grid">
+          <div class="flex flex-col items-center py-12 border-r border-[rgba(100,140,255,0.07)] bg-[rgba(10,15,35,0.3)]">
+            <div class="w-4 h-4 rounded-full bg-[rgba(91,141,239,0.2)] border-2 border-[rgba(91,141,239,0.3)] mb-6"></div>
+            <div class="h-6 w-10 rounded bg-[rgba(255,255,255,0.04)]"></div>
+          </div>
+          <div class="flex flex-col justify-center px-10 py-10 md:px-14 gap-4">
+            <div class="h-6 w-28 rounded-lg bg-[rgba(91,141,239,0.06)] border border-[rgba(91,141,239,0.1)]"></div>
+            <div class="h-10 w-64 rounded bg-[rgba(255,255,255,0.04)]"></div>
+            <div class="h-6 w-48 rounded bg-[rgba(255,255,255,0.03)]"></div>
+            <div class="h-4 w-full rounded bg-[rgba(255,255,255,0.03)]"></div>
+            <p class="text-[#515a6e] text-[0.8rem] flex items-center gap-2 mt-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              No education entries yet.
+            </p>
+          </div>
         </div>
       </div>
     }
@@ -163,12 +237,12 @@
 
   <!-- Add Education button — admin only -->
   @if (auth.isAdmin()) {
-    <div class="mt-8">
+    <div class="mt-6 sm:mt-8">
       <button
         type="button"
         (click)="addEducation()"
         [disabled]="isAdding()"
-        class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl border border-dashed border-[rgba(91,141,239,0.25)] bg-[rgba(91,141,239,0.04)] text-[#5b8def] text-[0.8rem] font-medium hover:bg-[rgba(91,141,239,0.1)] hover:border-[rgba(91,141,239,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        class="inline-flex items-center gap-2.5 px-4 sm:px-5 py-2.5 rounded-xl border border-dashed border-[rgba(91,141,239,0.25)] bg-[rgba(91,141,239,0.04)] text-[#5b8def] text-[0.78rem] sm:text-[0.8rem] font-medium hover:bg-[rgba(91,141,239,0.1)] hover:border-[rgba(91,141,239,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         @if (isAdding()) {
           <svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">

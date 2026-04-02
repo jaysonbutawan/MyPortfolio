@@ -5,7 +5,7 @@
   <!-- Section Header -->
   <div class="mb-12 md:mb-16">
     <p
-      class="font-['JetBrains_Mono',monospace] text-4xl text-[#5b8def] tracking-[3px] uppercase opacity-80 mb-3"
+      class="inline-flex font-['JetBrains_Mono',monospace] lg:text-3xl sm:text-xs text-4xl text-[#5b8def] tracking-[3px] uppercase opacity-80 mb-3"
     >
       // Featured Projects
     </p>
@@ -43,15 +43,31 @@
             class="absolute top-4 right-4 z-20 inline-flex items-center justify-center w-8 h-8 rounded-xl bg-black/40 backdrop-blur-sm hover:bg-[rgba(239,68,68,0.25)] border border-white/10 hover:border-[rgba(239,68,68,0.4)] text-white/50 hover:text-[#f87171] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
           >
             @if (deletingId() === project.id) {
-              <svg class="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              <svg
+                class="w-3.5 h-3.5 animate-spin"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path
+                  d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+                />
               </svg>
             } @else {
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"/>
-                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                <path d="M10 11v6M14 11v6"/>
-                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              <svg
+                class="w-3.5 h-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="3 6 5 6 21 6" />
+                <path
+                  d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+                />
               </svg>
             }
           </button>
@@ -68,55 +84,71 @@
           <!-- Dot grid pattern -->
           <div class="absolute inset-0 opacity-[0.04] dot-grid"></div>
 
-         <div class="absolute inset-0 flex items-center justify-center">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <!-- Show uploaded image if exists -->
+            @if (project.icon) {
+              <img
+                [src]="project.icon"
+                alt="{{ project.title }}"
+                class="w-full h-full object-cover opacity-30 group-hover:opacity-50 group-hover:scale-105 transition-all duration-600 ease-out"
+              />
+            } @else {
+              <!-- Fallback placeholder -->
+              <span class="text-6xl opacity-20">📁</span>
+            }
 
-  <!-- Show uploaded image if exists -->
-  @if (project.icon) {
-    <img
-      [src]="project.icon"
-      alt="{{ project.title }}"
-      class="w-full h-full object-cover opacity-30 group-hover:opacity-50 group-hover:scale-105 transition-all duration-600 ease-out"
-    />
-  } @else {
-    <!-- Fallback placeholder -->
-    <span class="text-6xl opacity-20">📁</span>
-  }
+            <!-- Admin upload overlay -->
+            @if (auth.isAdmin()) {
+              <label
+                [for]="'img-upload-' + project.id"
+                class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer z-10"
+              >
+                <div class="flex flex-col items-center gap-1 text-white/70 hover:text-white">
+                  <svg
+                    class="w-6 h-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <span
+                    class="text-[0.65rem] font-['JetBrains_Mono',monospace] tracking-wider uppercase"
+                  >
+                    {{ project.icon ? 'Replace' : 'Upload' }}
+                  </span>
+                </div>
+                <input
+                  [id]="'img-upload-' + project.id"
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  (change)="onImageSelected($event, project.id)"
+                />
+              </label>
 
-  <!-- Admin upload overlay -->
-  @if (auth.isAdmin()) {
-    <label
-      [for]="'img-upload-' + project.id"
-      class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer z-10"
-    >
-      <div class="flex flex-col items-center gap-1 text-white/70 hover:text-white">
-        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="17 8 12 3 7 8"/>
-          <line x1="12" y1="3" x2="12" y2="15"/>
-        </svg>
-        <span class="text-[0.65rem] font-['JetBrains_Mono',monospace] tracking-wider uppercase">
-          {{ project.icon ? 'Replace' : 'Upload' }}
-        </span>
-      </div>
-      <input
-        [id]="'img-upload-' + project.id"
-        type="file"
-        accept="image/*"
-        class="hidden"
-        (change)="onImageSelected($event, project.id)"
-      />
-    </label>
-
-    <!-- Upload progress indicator -->
-    @if (uploadingId() === project.id) {
-      <div class="absolute inset-0 flex items-center justify-center bg-black/60 z-20">
-        <svg class="w-6 h-6 animate-spin text-[#5b8def]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-        </svg>
-      </div>
-    }
-  }
-</div>
+              <!-- Upload progress indicator -->
+              @if (uploadingId() === project.id) {
+                <div class="absolute inset-0 flex items-center justify-center bg-black/60 z-20">
+                  <svg
+                    class="w-6 h-6 animate-spin text-[#5b8def]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <path
+                      d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+                    />
+                  </svg>
+                </div>
+              }
+            }
+          </div>
 
           <!-- Shine sweep on hover -->
           <div
@@ -174,7 +206,9 @@
                 {{ tech }}
               </span>
             } @empty {
-              <span class="text-[0.65rem] text-[#515a6e] uppercase tracking-tight">No stack yet</span>
+              <span class="text-[0.65rem] text-[#515a6e] uppercase tracking-tight"
+                >No stack yet</span
+              >
             }
             @if (auth.isAdmin()) {
               <app-inline-edit
@@ -195,9 +229,13 @@
       </div>
     } @empty {
       <!-- Empty state placeholder -->
-      <div class="md:col-span-2 relative bg-[rgba(14,20,40,0.5)] border border-dashed border-[rgba(100,140,255,0.15)] rounded-3xl overflow-hidden">
+      <div
+        class="md:col-span-2 relative bg-[rgba(14,20,40,0.5)] border border-dashed border-[rgba(100,140,255,0.15)] rounded-3xl overflow-hidden"
+      >
         <div class="relative h-32 bg-[rgba(91,141,239,0.03)]">
-          <div class="absolute inset-0 flex items-center justify-center text-5xl opacity-10">📁</div>
+          <div class="absolute inset-0 flex items-center justify-center text-5xl opacity-10">
+            📁
+          </div>
         </div>
         <div class="p-6 sm:p-7">
           <div class="h-3 w-24 rounded bg-[rgba(255,255,255,0.05)] mb-3"></div>
@@ -207,7 +245,17 @@
             <div class="h-3 w-4/5 rounded bg-[rgba(255,255,255,0.03)]"></div>
           </div>
           <p class="text-[#515a6e] text-[0.8rem] flex items-center gap-2">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <svg
+              class="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
             No projects yet.
           </p>
         </div>
@@ -225,13 +273,29 @@
         class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl border border-dashed border-[rgba(91,141,239,0.25)] bg-[rgba(91,141,239,0.04)] text-[#5b8def] text-[0.8rem] font-medium hover:bg-[rgba(91,141,239,0.1)] hover:border-[rgba(91,141,239,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         @if (isAdding()) {
-          <svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          <svg
+            class="w-4 h-4 animate-spin"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <path
+              d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+            />
           </svg>
           Creating…
         } @else {
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          <svg
+            class="w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
           Add Project
         }
